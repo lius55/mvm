@@ -6,25 +6,24 @@
 <link href="./lib/bootstrap.min.css" rel="stylesheet">
 <link href="./css/app.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./css/shLogin.css">
-<!-- <link rel="stylesheet" type="text/css" href="./lib/bootstrap-datepicker.min.css"> -->
+<link rel="stylesheet" type="text/css" href="./lib/bootstrap-datepicker3.min.css">
 <link href="./css/style.css" rel="stylesheet">
 <link href="./css/commRegister.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 
 <script src="./lib/jquery-3.1.1.min.js"></script>
 <script src="./lib/bootstrap.min.js"></script>
 <script src="./lib/moment-with-locales.js"></script>
-<!-- <script src="./lib/bootstrap-datepicker3.min.js"></script> -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./lib/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.ja.min.js"></script>
 <script src="./scripts/commRegister.js"></script>
-
 </head>
-<body onload="initialize()" class="body-extend">
+
+<body onload="initialize()">
 	<div class="container container-extend">
 		<div class="well well-extend">
-			<blockquote class="blockquote-extend">通話明細データ作成</blockquote>
+			<label class="label-extend">通話明細データ作成</label>
 		</div>
-		<div>
+		<div class="panel-extend">
 			<table class="table table-extend">
 				<tr>
 					<td>利用年月</td>
@@ -48,17 +47,20 @@
 					<td>商品コード</td>
 					<td>
 						<select class="form-control select-extend">
-			        		<option value="1">3100</option>
-			        		<option value="2" selected="selected">3200</option>
+			        		<option value="1" selected="selected">3100</option>
+			        		<option value="2">3200</option>
 			      		</select>
 					</td>
 				</tr>
 				<tr>
 					<td>通話明細ファイル</td>
-					<td><input type="text" class="form-control" id="usr"></td>
+					<td>
+						<input type="text" class="form-control file-control">
+						<button type="button" class="btn btn-extend btn-success">選択</button>
+					</td>
 				</tr>
 				<tr>
-					<td><button type="button" id="btnLogin" class="btn btn-success">データ作成</button></td>
+					<td colspan="2"><button type="button" class="btn btn-extend btn-success">データ作成</button></td>
 				</tr>
 			</table>
 		</div>

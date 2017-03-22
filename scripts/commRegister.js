@@ -1,13 +1,13 @@
-function initialize() {
+function initialize() 
+{
+	// datepicker設定
+    $('.date').datepicker({
+    	format: 'yyyy/mm',
+    	minViewMode: '1',
+    	language: 'ja'    // カレンダー日本語化のため
+    });
 
-// datetimepicker初期化
-$(function () {
-  $('.date').datetimepicker({
-    locale: 'ja',
-    format : 'YYYY/MM'
-  });
-});
-
-
+    // カレンダーを現在時刻に設定
+    $('.date').datepicker('setDate', new Date());
 
 }

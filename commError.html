@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>通話明細生成エラーログ照会</title>
+<link href="./lib/bootstrap.min.css" rel="stylesheet">
+<link href="./css/app.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./css/shLogin.css">
+<link rel="stylesheet" type="text/css" href="./lib/bootstrap-datepicker3.min.css">
+<link href="./css/style.css" rel="stylesheet">
+
+<script src="./lib/jquery-3.1.1.min.js"></script>
+<script src="./lib/bootstrap.min.js"></script>
+<script src="./lib/moment-with-locales.js"></script>
+<script src="./lib/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.ja.min.js"></script>
+<script src="./scripts/commError.js"></script>
+<script src="./scripts/common.js"></script>
+</head>
+<body>
+	<div class="container container-extend">
+		<div class="well well-extend well-switch">
+			<label class="label-extend label-switch" for="switch">検索条件</label>
+		</div>
+		<div id="switch" class="panel-extend-sm">
+			<table class="table-extend">
+				<tr>
+					<td>利用年月</td>
+					<td>
+						<div class="input-group date-extend">
+			                <input type="text" class="form-control date"/>
+			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			            </div>
+					</td>
+				</tr>
+			</table>
+			<div class="btn-grp-right">
+				<button type="button" class="btn btn-extend btn-success">検索</button>
+				<button type="button" class="btn btn-extend btn-success">クリア</button>
+			</div>
+		</div>
+		<table class="table list-table">
+			<tr>
+				<th>利用年月</th>
+				<th>通番</th>
+				<th>SIM電話番号</th>
+				<th>エラー内容</th>
+				<th>登録日時</th>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td>通番</td>
+				<td>SIM電話番号</td>
+				<td>エラー内容</td>
+				<td>登録日時</td>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td>通番</td>
+				<td>SIM電話番号</td>
+				<td>エラー内容</td>
+				<td>登録日時</td>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td>通番</td>
+				<td>SIM電話番号</td>
+				<td>エラー内容</td>
+				<td>登録日時</td>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td>通番</td>
+				<td>SIM電話番号</td>
+				<td>エラー内容</td>
+				<td>登録日時</td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+		$("#switch").on("click1", function(){
+			console.log($(this).prop('checked'));
+			if($(this).prop('checked')) {
+				$(this).prop('checked', false);
+			}
+			console.log($(this).prop('checked'));
+		});
+	</script>
+</body>
+</html>
