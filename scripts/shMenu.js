@@ -2,6 +2,7 @@
 var m_menuBtn;
 var m_menuWidth;
 
+// clsTreeクラス定義
 function clsTree(name, fnc, key)
 {
 	this.name = name;
@@ -35,9 +36,12 @@ function initialize() {
 	ysize = parseInt($('body').css('height'));
 	m_menuWidth = xsize;
 	m_nTreeFontSize = parseInt(fs);
+	// メニュー表示エリア作成
 	area = fnctreeCreateArea("area", 0, 0, xsize, ysize);
 	document.body.appendChild(area);
 	m_treeSelect = null;
+	// tree0→親
+	// tree1-A→子供
 	tree0 = new clsTree("", fncNameClick, "treetop");
 	tree1 = new clsTree("資料請求管理", fncNameClick, "docu");
 	tree11 = new clsTree("資料請求新規登録", fncNameClick, "docuRegister");
@@ -128,7 +132,9 @@ function initialize() {
 	tree0.Push(treeA);
 	treeA.Push(treeA1);
 	treeA.Push(treeA2);
+	// メニューtree初期化処理
 	fnctreeInitElement(tree0);
+	// 描画処理
 	fnctreeView(area, tree0, 20, 20);
 	fncMenuButton(m_menuWidth, fncHideMenu);
 }
@@ -204,6 +210,7 @@ function fncOnClickCallBack(str1, str2, href)
 	top.shMain.location.href = "./"+href+".html";
 }
 
+// メニュー名前クリックイベント処理
 function fncNameClick(tree)
 {
 	var str;
@@ -244,6 +251,7 @@ function fnctreeCreateArea(id, sx, sy, wd, hi)
 	return(area);
 }
 
+// 初期化処理
 function fnctreeInitElement(tree)
 {
 	var fnc;
@@ -253,6 +261,7 @@ function fnctreeInitElement(tree)
 	fnc(tree, 0, "0");
 }
 
+// 再帰的にメニュー作成
 function fnctreeInitEleLoop(tree, level, idxstr)
 {
 	var ary;
@@ -412,6 +421,7 @@ function fnctreeClose()
 	// 以下の１行はツリー処理とは無関係
 	fncMenuButton(m_menuWidth, fncHideMenu);
 }
+
 function fnctreeOnClick()
 {
 	var idxstr;
@@ -422,10 +432,11 @@ function fnctreeOnClick()
 	tree = fnctreeGetSelectTree(idxstr);
 	parent = fnctreeGetParent(idxstr);
 	// 以下１行　ツリー処理とは無関係
-	fncOnClickCallBack(parent.name, tree.name, tree.keystr);
+	fncOnClickCallBack(parent.name, tree.name, parent.keystr + "/" + tree.keystr);
 	m_treeSelect = tree;
 	tree.fncCallBack(tree);
 }
+
 function fnctreeGetSelectTree(idxstr)
 {
 	var idxstr;
@@ -445,6 +456,7 @@ function fnctreeGetSelectTree(idxstr)
 	}
 	return(tree);
 }
+// treeの親要素取得
 function fnctreeGetParent(idxstr)
 {
 	var idxstr;
