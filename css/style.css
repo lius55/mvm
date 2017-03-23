@@ -129,3 +129,6 @@
 .panel-clicked {
 	display: none;
 }
+#update-container {
+	display: none;
+}

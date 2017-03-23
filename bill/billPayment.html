@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>通話月額データ作成</title>
+<title>入金消込</title>
 <link rel="stylesheet" href="../lib/bootstrap.min.css">
 <link rel="stylesheet" href="../css/app.css">
 <link rel="stylesheet" href="../lib/bootstrap-datepicker3.min.css">
@@ -13,39 +13,26 @@
 <script src="../lib/bootstrap-datepicker.min.js"></script>
 <script src="../lib/bootstrap-datepicker.ja.min.js"></script>
 <script src="../scripts/common.js"></script>
-<script src="./scripts/commMonthly.js"></script>
+<script src="./scripts/billPayment.js"></script>
 </head>
 <body>
 	<div class="container container-extend">
 		<div class="well well-extend">
-			<label class="label-extend">通話月額データ作成</label>
+			<label class="label-extend">入金消込</label>
 		</div>
 		<div class="panel-extend">
 			<table class="table table-extend">
 				<tr>
-					<td>利用年月</td>
-					<td>
-						<div class="input-group date-extend">
-			                <input type="text" class="form-control date"/>
-			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-			            </div>
-					</td>
-				</tr>
-				<tr>
 					<td>請求年月</td>
 					<td>
 						<div class="input-group date-extend">
-			                <input type="text" class="form-control date"/>
-			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-			            </div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<button type="button" class="btn btn-extend btn-success">月額データ作成</button>
+	                    	<input type="text" class="form-control date"/>
+	                    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	                	</div>
 					</td>
 				</tr>
 			</table>
+			<div><button type="button" class="btn btn-extend btn-success">入金消込</button></div>
 		</div>
 	</div>
 </body>
