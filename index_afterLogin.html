@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="./share/css/style.css">
+<script src="./share/js/jquery-3.1.1.min.js"></script>
+<script src="./share/js/menu.js"></script>
+<title>いきスマ管理システム</title>
+</head>
+<body>
+<div class="header">
+  <p class="title">いきスマ管理システム</p>
+  <p class="logout" id = "logout">ログアウト</p>
+  <p id = "subtitle" class="subtitle"></p>
+</div>
+<main>
+<div class="menu">
+  <div id="topbar" class="topbar">
+    <img id="hidemenu" class="hidemenu" src="./share/img/hidemenu.png" />
+  </div>
+  <div class="menu-list">
+    <label for="docu">資料請求管理</label>
+    <input type="checkbox" id="docu" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">資料請求新規登録</a></li>
+        <li><a target="main-frame" href="test.html">資料請求CSVアップロード</a></li>
+        <li><a target="main-frame" href="test.html">資料請求検索</a></li>
+        <li><a target="main-frame" href="test.html">資料請求照会・更新</a></li>
+        <li><a target="main-frame" href="test.html">資料請求宛名印刷</a></li>
+    </ul>
+    <label for="cont">契約管理</label>
+    <input type="checkbox" id="cont" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">契約者・利用者・契約検索</a></li>
+        <li><a target="main-frame" href="test.html">新規申込書登録</a></li>
+        <li><a target="main-frame" href="test.html">契約照会・更新</a></li>
+        <li><a target="main-frame" href="test.html">設定情報出力</a></li>
+    </ul>
+    <label for="mnp">MNP管理</label>
+    <input type="checkbox" id="mnp" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">MNP転入管理</a></li>
+        <li><a target="main-frame" href="test.html">MNP強制黒化</a></li>
+    </ul>
+    <label for="sales">販売管理</label>
+    <input type="checkbox" id="sales" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">販売新規登録</a></li>
+        <li><a target="main-frame" href="test.html">販売履歴</a></li>
+        <li><a target="main-frame" href="test.html">販売情報照会・更新</a></li>
+        <li><a target="main-frame" href="test.html">販売情報出力</a></li>
+    </ul>
+    <label for="comm">通信通話明細管理</label>
+    <input type="checkbox" id="comm" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="comm/commRegister.html">通話明細データ作成</a></li>
+        <li><a target="main-frame" href="comm/commError.html">通話明細生成エラーログ照会</a></li>
+        <li><a target="main-frame" href="comm/commUpdate.html">通話明細照会・更新</a></li>
+        <li><a target="main-frame" href="comm/commMonthly.html">通信月額データ作成</a></li>
+    </ul>
+    <label for="bill">請求管理</label>
+    <input type="checkbox" id="bill" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="bill/billRegister.html">請求データ作成</a></li>
+        <li><a target="main-frame" href="bill/billError.html">請求データ作成エラーログ照会</a></li>
+        <li><a target="main-frame" href="bill/billUpdate.html">請求明細照会・更新</a></li>
+        <li><a target="main-frame" href="bill/billSettlement.html">決済データダウンロード</a></li>
+        <li><a target="main-frame" href="bill/billBilling.html">請求データダウンロード</a></li>
+        <li><a target="main-frame" href="bill/billUpload.html">振替結果登録</a></li>
+        <li><a target="main-frame" href="bill/billPayment.html">入金消込</a></li>
+    </ul>
+    <label for="conc">コンシェルジュ履歴管理</label>
+    <input type="checkbox" id="conc" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">応対履歴登録</a></li>
+        <li><a target="main-frame" href="test.html">応対履歴検索</a></li>
+    </ul>
+    <label for="agen">代理店管理</label>
+    <input type="checkbox" id="agen" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">代理店新規登録</a></li>
+        <li><a target="main-frame" href="test.html">代理店照会・更新</a></li>
+        <li><a target="main-frame" href="test.html">代理店実績管理</a></li>
+    </ul>
+    <label for="prod">商品定義管理</label>
+    <input type="checkbox" id="prod" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">商品定義新規登録</a></li>
+        <li><a target="main-frame" href="test.html">商品定義照会・更新</a></li>
+    </ul>
+    <label for="oper">オペレータ管理</label>
+    <input type="checkbox" id="oper" class="on-off" />
+    <ul>
+        <li><a target="main-frame" href="test.html">オペレータ新規登録</a></li>
+        <li><a target="main-frame" href="test.html">オペレータ照会・更新</a></li>
+    </ul>
+  </div>
+</div>
+<div class="main">
+    <iframe src="" name="main-frame" id="main-frame"></iframe>
+    <img src="test.png" />
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,3 @@
+// jsパラメーター取得
+var target_lat = location.search.match(/lat=(.*?)(&|$)/)[1];
+//

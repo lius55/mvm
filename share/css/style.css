@@ -1,7 +1,11 @@
-/* 
+@CHARSET "UTF-8";
 
-*/
-
+html, body {
+  width: 100%;
+  height:100%;
+  margin:0;
+  padding:0;
+}
 html {
   background-color: #ffffff;
 }
@@ -14,9 +18,183 @@ body {
   color: #58666e;
   background-color: transparent;
   margin: 0px !important;
+  overflow:hidden;
 }
 * {
   font-family: "KozGoPro-Light", "小塚ゴシック Pro L", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, "メイリオ", Meiryo, sans-serif;
+}
+
+.header {
+  padding: 5px 15px;
+  background-color: white;
+  background-image: url("../img/titlebar.png")
+}
+.header .title {
+  color: #385723;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 5px;
+  margin-left: 20px;
+}
+.header .logout {
+  color: #0000FF;
+  font-size: 20px;
+  font-weight: normal;
+  text-decoration: underline;
+  text-align: right;
+  margin-top: -40px;
+  margin-right: 10px;
+}
+.header .subtitle {
+  color: #7F7F7F;
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+main {
+  display: table;
+  border: 0px;
+  border-style: none;
+  width: 100%;
+  height:100%;
+}
+.menu {
+  display: table-cell;
+  border: 0px;
+  text-align: left;
+  vertical-align: top;
+  width: 270px;
+  height:100%;
+  color:#385723;
+  font-size:20px;
+  font-weight:bold;
+  line-height: 100%;
+}
+.menu .topbar {
+  background-color :#385723;
+  height:40px;
+  text-align: right;
+}
+.menu .topbar .hidemenu {
+  margin: 2px;
+  width: 36px;
+  height: 36px;
+  display: inline;
+}
+
+
+.menu .menu-list label {
+  background-image: url("../img/close.png");
+  background-size: 20px 20px;
+  background-position: 10px 9px;
+  background-repeat: no-repeat;
+  padding: 10px;
+  padding-left: 35px;
+  display: block;
+  margin: 0;
+  border: none;
+  color:#385723;
+  font-size:20px;
+  font-weight:bold;
+  line-height: 100%;
+}
+.menu .menu-list label:hover{
+  background-image: url("../img/open.png");
+  color:#a9d4bd;
+}
+.menu .menu-list .off {
+  background-image: url("../img/close.png");
+  background-size: 20px 20px;
+  background-position: 10px 9px;
+  background-repeat: no-repeat;
+  color:#385723;
+}
+.menu .menu-list .on {
+  background-image: url("../img/open.png");
+  background-size: 20px 20px;
+  background-position: 10px 9px;
+  background-repeat: no-repeat;
+  color:#a9d4bd;
+}
+
+.menu .menu-list input[type="checkbox"].on-off{
+  display: none;
+}
+.menu .menu-list  ul {
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  transition: all 0.1s;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu .menu-list  li {
+  padding: 5px;
+  padding-left: 50px;
+  background-image: url("../img/close.png");
+  background-size: 20px 20px;
+  background-position: 25px 3px;
+  background-repeat: no-repeat;
+  color:#385723;
+  font-size:20px;
+  font-weight:bold;
+  line-height: 100%;
+  text-decoration: none;
+}
+.menu .menu-list .lion {
+  color: #a9d4bd;
+  background-image: url("../img/close.png");
+}
+.menu .menu-list .lion a { text-decoration: none; color: #a9d4bd; }
+.menu .menu-list .lion a:link { text-decoration: none; color: #a9d4bd; }
+.menu .menu-list .lion a:visited { text-decoration: none; color: #a9d4bd; }
+.menu .menu-list .lion a:hover { text-decoration: none; color: #a9d4bd; }
+.menu .menu-list .lion a:active { text-decoration: none; color: #a9d4bd; }
+
+.menu .menu-list .lioff {
+  color:#385723;
+  background-image: url("../img/close.png");
+}
+.menu .menu-list .lioff a { text-decoration: none; color: #385723; }
+.menu .menu-list .lioff a:link { text-decoration: none; color: #385723; }
+.menu .menu-list .lioff a:visited { text-decoration: none; color: #385723; }
+.menu .menu-list .lioff a:hover { text-decoration: none; color: #385723; }
+.menu .menu-list .lioff a:active { text-decoration: none; color: #385723; }
+
+.menu .menu-list li a { text-decoration: none; }
+.menu .menu-list li a:link { text-decoration: none; color: #385723; }
+.menu .menu-list li a:visited { text-decoration: none; color: #385723; }
+.menu .menu-list li a:hover { text-decoration: none; color: #a9d4bd; }
+.menu .menu-list li a:active { text-decoration: none; color: #385723; }
+.menu .menu-list input[type="checkbox"].on-off + ul {
+  height: 0;
+  overflow: hidden;
+}
+.menu .menu-list input[type="checkbox"].on-off:checked + ul {
+  height: 100%;
+}
+
+
+.main {
+  display: table-cell;
+  border: 0px;
+  text-align: left;
+  vertical-align: top;
+  height:100%;
+  margin-top: 100px;
+  margin-left: 270px;
+  background-color: #fbfbea;
+}
+
+.main iframe {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height:100%;
 }
 
 .h1,
@@ -682,18 +860,6 @@ pre {
   position: absolute;
   top: 50%;
   left: 50%;
-}
-
-/*layout*/
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  overflow-x: hidden;
 }
 
 .app {
@@ -5188,12 +5354,12 @@ a.text-#000000:hover {
   background-color: #e2f0d9 !important;
 }
 
-.top-header{
+header{
   padding: 5px 15px;
   background-color: white;
 }
 
-.top-header .title{
+header .title{
   font-weight: 900;
   font-size: 24px;
   margin-bottom: 0px;

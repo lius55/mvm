@@ -19,3 +19,21 @@ window.onload = function() {
     // デフォルトで当月表示する
     $('.date').datepicker('setDate', new Date());
 }
+
+// api呼び出し用ajaxラッピング関数
+var ajax = function(option) {
+	$.ajax({
+		type: 'POST',
+		url: option.url,
+    	data: option.data,
+    	cache: false,
+    	success: option.success,
+    	error: function(){
+    		if (option.error == undefined) {
+    			alert("システムエラー発生しました。");
+    		} else {
+    			return option.error;
+    		}
+    	}
+	});
+};
