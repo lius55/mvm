@@ -12,13 +12,14 @@ window.onload = function() {
 
 	// datepicker設定
     $('.date').datepicker({
-    	format: 'yyyy/mm',// 日付フォマット
-    	minViewMode: '1', // デフォルトを月選択に設定
-    	language: 'ja'    // カレンダー日本語化のため
+    	format: 'yyyy/mm',     // 日付フォマット
+        autoclose: true,       // 自動閉じる
+    	minViewMode: 'months', // デフォルトを月選択に設定
+    	language: 'ja'         // カレンダー日本語化のため
     });
     // デフォルトで当月表示する
     $('.date').datepicker('setDate', new Date());
-}
+};
 
 // api呼び出し用ajaxラッピング関数
 var ajax = function(option) {

@@ -3,7 +3,8 @@ function initialize()
 	// datepicker設定
     $('.date').datepicker({
     	format: 'yyyy/mm',
-    	minViewMode: '1',
+    	minViewMode: 'months',
+    	autoclose: true,
     	language: 'ja'    // カレンダー日本語化のため
     });
 
