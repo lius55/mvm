@@ -1,3 +1,6 @@
+body {
+	overflow-y: auto;
+}
 .blockquote-extend {
 	border-left: 5px solid #385723;
 	margin: 5px;
@@ -12,6 +15,7 @@
     border: 1px solid #e3e3e3;
     margin: 0px;
     margin-bottom: 3px;
+    position: relative;
 }
 .container-extend {
 	padding: 3px;
@@ -23,15 +27,28 @@
 .container-extend input, .container-extend select {
 	border: 1px solid rgb(84, 130, 53);
 }
+/* ファイル選択 */
 .container-extend .file-control {
 	width: 300px;
 	display: inline-block;
 }
-.date-extend {
+/* カレンダー選択 */
+.calendar-date {
+	width: 300px;
+}
+/* 月選択 */
+.calendar-month {
+	width: 180px;
+}
+.input-extend-m {
+	width: 300px;
+}
+.input-extend-s {
 	width: 180px;
 }
 .table-extend {
 	border-collapse:collapse;
+	width: 100%;
 }
 .table-extend tr td:first-child {
 	width: 30%;
@@ -40,6 +57,22 @@
 .table-extend > tbody > tr > td {
 	border: 0px;
 	padding: 3px;
+}
+/*4列テーブル*/
+.table-extend-4col {
+	border-collapse:collapse;
+	width: 100%;
+}
+.table-extend-4col tr td {
+	width: 25%;
+}
+.table-extend-4col > tbody > tr > td {
+	border: 0px;
+	padding: 3px;
+}
+.table-extend-4col .values {
+	font-weight: bold;
+	color: black
 }
 .select-extend {
 	width: 180px;
@@ -108,7 +141,7 @@
     border-color: rgb(84, 130, 53) transparent transparent transparent;
     right: 10px;
     position: absolute;
-    top: 15px;
+    top: 8px;
 }
 .well-switch.clicked::after {
 	transform: rotate(-90deg);
@@ -130,5 +163,10 @@
 	display: none;
 }
 #update-container {
-	display: none;
+	/*display: none;*/
+}
+
+/* 再計算ボタン */
+.btn-recal {
+	float: right;
 }

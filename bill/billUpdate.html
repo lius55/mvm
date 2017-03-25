@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>決済データダウンロード</title>
+<link rel="stylesheet" href="../share/css/bootstrap.min.css">
+<link rel="stylesheet" href="../share/css/style.css">
+<link rel="stylesheet" href="../share/css/bootstrap-extend.css">
+<link rel="stylesheet" href="../share/css/bootstrap-datepicker3.min.css">
+<script src="../share/js/jquery-3.1.1.min.js"></script>
+<script src="../share/js/bootstrap.min.js"></script>
+<script src="../share/js/jquery.tmpl.min.js"></script>
+<script src="../share/js/moment-with-locales.js"></script>
+<script src="../share/js/bootstrap-datepicker.min.js"></script>
+<script src="../share/js/bootstrap-datepicker.ja.min.js"></script>
+<script src="../share/js/common.js"></script>
+<script src="./scripts/billUpdate.js"></script>
+</head>
+<body>
+	<div class="container container-extend">
+		<!--請求情報-->
+		<div class="well well-extend well-switch" for="billInfo">
+			<label class="label-extend label-switch">請求情報</label>
+		</div>
+		<div id="billInfo" class="panel-extend-sm"></div>
+		<!--請求データ-->
+		<div class="well well-extend well-switch" for="billData">
+			<label class="label-extend label-switch">請求データ</label>
+		</div>
+		<div id="billData" class="panel-extend-sm"></div>
+		<!--請求明細データ(1)-->
+		<div class="well well-extend well-switch" for="billDetail1">
+			<label class="label-extend label-switch">請求明細データ(1)</label>
+		</div>
+		<div id="billDetail1" class="panel-extend-sm"></div>
+		<!--請求明細データ(2)-->
+		<div class="well well-extend well-switch" for="billDetail2">
+			<label class="label-extend label-switch">請求明細データ(2)</label>
+		</div>
+		<div id="billDetail2" class="panel-extend-sm">
+			<table class="table-extend">
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<div>
+				<button type="button" class="btn btn-extend btn-success">更新</button>
+			</div>
+		</div>
+		<!--請求明細データ(3)-->
+		<div class="well well-extend well-switch" for="billDetail3">
+			<label class="label-extend label-switch">請求明細データ(3)</label>
+		</div>
+		<div id="billDetail3" class="panel-extend-sm">
+			<table class="table-extend">
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<div>
+				<button type="button" class="btn btn-extend btn-success">更新</button>
+			</div>
+		</div>
+	</div>
+<script type="text/html" id="billInfoTemplate">
+	<table class="table-extend-4col">
+		<tr>
+			<td>契約ID</td>
+			<td class="values">${cntrctID}</td>
+			<td>登録日時</td>
+			<td class="values">${registrationDate}</td>
+		</tr>
+		<tr>
+			<td>請求年月</td>
+			<td class="values">${billMonth}</td>
+			<td>更新日時</td>
+			<td class="values">${updateDate}</td>
+		</tr>
+		<tr>
+			<td>請求合計（税抜）</td>
+			<td class="values"></td>
+			<td>登録更新オペレータID</td>
+			<td class="values"></td>
+		</tr>
+		<tr>
+			<td>消費税</td>
+			<td class="values"></td>
+		</tr>
+		<tr>
+			<td>請求合計（税込）</td>
+			<td class="values"></td>
+		</tr>
+	</table>
+	<div>
+		<button type="button" class="btn btn-extend btn-success">更新</button>
+		<button type="button" class="btn btn-extend btn-success">キャンセル</button>
+		<button type="button" class="btn btn-extend btn-success btn-recal">再計算</button>
+	</div>
+</script>
+<script type="text/html" id="billDataTemplate">
+	<table class="table table-extend">
+		<tr>
+			<td>請求日</td>
+			<td>
+				<div class="input-group calendar-date">
+					<input type="text" class="form-control date"/>
+			    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
+			    </div>
+			</td>
+		</tr>
+		<tr>
+			<td>支払方法</td>
+			<td>
+				<select class="form-control select-extend">
+	        		<option value="1" selected="selected">クレカ</option>
+	        		<option value="2">3200</option>
+	      		</select>
+			</td>
+		</tr>
+		<tr>
+			<td>口座依頼書番号</td>
+			<td><input type="text" class="form-control input-extend-m"/></td>
+		</tr>
+		<tr>
+			<td>振替結果</td>
+			<td><input type="text" class="form-control input-extend-m"/></td>
+		</tr>
+		<tr>
+			<td>振替結果登録日</td>
+			<td>
+				<div class="input-group calendar-date">
+					<input type="text" class="form-control date"/>
+			    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
+			    </div>
+			</td>
+		</tr>
+	</table>
+</script>
+<script type="text/html" id="billDetailTemplate">
+	<table class="table table-extend">
+		<tr>
+			<td>連番</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>商品コード</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>利用年月</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>販売日</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>数量</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>請求額（税抜）</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>予備１</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>予備２</td>
+			<td></td>
+		</tr>
+	</table>
+</script>
+</body>
+</html>

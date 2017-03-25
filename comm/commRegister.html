@@ -25,8 +25,8 @@
 				<tr>
 					<td>利用年月</td>
 					<td>
-		                <div class="input-group date-extend">
-		                    <input type="text" class="form-control date"/>
+		                <div class="input-group calendar-month">
+		                    <input type="text" class="form-control date" id="useDateMonth"/>
 		                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 		                </div>
 					</td>
@@ -34,8 +34,8 @@
 				<tr>
 					<td>請求年月</td>
 					<td>
-						<div class="input-group date-extend">
-	                    	<input type="text" class="form-control date"/>
+						<div class="input-group calendar-month">
+	                    	<input type="text" class="form-control date" id="billDateMonth"/>
 	                    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 	                	</div>
 					</td>
@@ -43,21 +43,25 @@
 				<tr>
 					<td>商品コード</td>
 					<td>
-						<select class="form-control select-extend">
-			        		<option value="1" selected="selected">3100</option>
-			        		<option value="2">3200</option>
+						<select class="form-control select-extend" id="productCode">
+			        		<option value="3100" selected="selected">3100</option>
+			        		<option value="3200">3200</option>
 			      		</select>
 					</td>
 				</tr>
 				<tr>
 					<td>通話明細ファイル</td>
 					<td>
-						<input type="text" class="form-control file-control">
-						<button type="button" class="btn btn-extend btn-success">選択</button>
+						<form id="requestForm">
+							<input type="file" class="form-control file-control" name="file" />
+							<button type="button" class="btn btn-extend btn-success">選択</button>
+						</form>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><button type="button" class="btn btn-extend btn-success">データ作成</button></td>
+					<td colspan="2">
+						<button type="button" class="btn btn-extend btn-success" id="createData">データ作成</button>
+					</td>
 				</tr>
 			</table>
 		</div>
