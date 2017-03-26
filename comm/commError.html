@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../share/css/bootstrap-datepicker3.min.css">
 <script src="../share/js/jquery-3.1.1.min.js"></script>
 <script src="../share/js/bootstrap.min.js"></script>
+<script src="../share/js/jquery.tmpl.min.js"></script>
 <script src="../share/js/moment-with-locales.js"></script>
 <script src="../share/js/bootstrap-datepicker.min.js"></script>
 <script src="../share/js/bootstrap-datepicker.ja.min.js"></script>
@@ -25,64 +26,58 @@
 				<tr>
 					<td>利用年月</td>
 					<td>
-						<div class="input-group date-extend">
-			                <input type="text" class="form-control date"/>
+						<div class="input-group calendar-month">
+			                <input type="text" class="form-control date" id="useDateMonth" placeholder="YYYY/MM"/>
 			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			            </div>
 					</td>
 				</tr>
 			</table>
 			<div class="btn-grp-right">
-				<button type="button" class="btn btn-extend btn-success">検索</button>
-				<button type="button" class="btn btn-extend btn-success">クリア</button>
+				<button type="button" class="btn btn-extend btn-success" id="search">検索</button>
+				<button type="button" class="btn btn-extend btn-success" id="clear">クリア</button>
 			</div>
 		</div>
-		<table class="table list-table">
-			<tr>
-				<th>利用年月</th>
-				<th>通番</th>
-				<th>SIM電話番号</th>
-				<th>エラー内容</th>
-				<th>登録日時</th>
-			</tr>
-			<tr>
-				<td>利用年月</td>
-				<td>通番</td>
-				<td>SIM電話番号</td>
-				<td>エラー内容</td>
-				<td>登録日時</td>
-			</tr>
-			<tr>
-				<td>利用年月</td>
-				<td>通番</td>
-				<td>SIM電話番号</td>
-				<td>エラー内容</td>
-				<td>登録日時</td>
-			</tr>
-			<tr>
-				<td>利用年月</td>
-				<td>通番</td>
-				<td>SIM電話番号</td>
-				<td>エラー内容</td>
-				<td>登録日時</td>
-			</tr>
-			<tr>
-				<td>利用年月</td>
-				<td>通番</td>
-				<td>SIM電話番号</td>
-				<td>エラー内容</td>
-				<td>登録日時</td>
-			</tr>
-		</table>
+		<div class="well well-extend">
+				<label class="label-extend label-switch">検索結果一覧</label>
+			</div>
+		<div class="panel-extend-sm" id="errorList"></div>
 	</div>
-	<script type="text/javascript">
-		$("#switch").on("click1", function(){
-			console.log($(this).prop('checked'));
-			if($(this).prop('checked')) {
-				$(this).prop('checked', false);
-			}
-			console.log($(this).prop('checked'));
-		});
-	</script>
 </body>
+
+<!--テンプレート定義-->
+<script type="text/html" id="errorListTemplate">
+	<div class="btn-grp-right btn-grp-page">
+		{{if index <= 1}}
+			<button type="button" class="btn btn-extend btn-disable">前へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index-1}">前へ</button>
+		{{/if}}
+		${index}/${pagenum}(合計${recordCount}件)
+		{{if index >= pagenum}}
+			<button type="button" class="btn btn-extend btn-disable">次へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index+1}">次へ</button>
+		{{/if}}
+	</div>
+	<table class="table list-table">
+		<tr>
+			<th width="10%">利用年月</th>
+			<th width="10%">通番</th>
+			<th width="15%">SIM電話番号</th>
+			<th width="50%">エラー内容</th>
+			<th width="15%">登録日時</th>
+		</tr>
+		{{each res}}
+		<tr>
+			<td>${useDateMonth}</td>
+			<td>${serialNumber}</td>
+			<td>${simNumber}</td>
+			<td>${errText}</td>
+			<td>${registrationDate}</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
 </html>

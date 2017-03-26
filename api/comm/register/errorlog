@@ -1,13 +1,83 @@
 {
-pageMax: 10,
-[
-	{
-		simNumber: simNumber,
-		useDateMonth: '201701',
-		billDateMonth: '201701',
-		billStatus: '済',
-		cntrctID: '',
-		
-	}
-]
+"recordCount": "161",
+"res":
+	[
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容:XX項目が設定されませんでした。ご確認ください。",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容1",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容2",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容3",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容4",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容5",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容6",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容7",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容8",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容9",
+			"registrationDate": "YYYYMMDDHHMM"
+		},
+		{
+			"useDateMonth": "201701",
+			"serialNumber": "S0001002",
+			"simNumber": "simNumber",
+			"errText": "エラー内容10",
+			"registrationDate": "YYYYMMDDHHMM"
+		}
+	]
 }

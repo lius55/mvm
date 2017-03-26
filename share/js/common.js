@@ -21,9 +21,17 @@ $(function() {
     $('.date').datepicker('setDate', new Date());
 });
 
+// APIパス設定
+var apiBaseUrl = location.protocol + "//" + location.host + '/mvm/api/';
+// var apiBaseUrl = location.protocol + "//" + location.host + '/app/mvm/api/';
 var apiList = {
-    commRegistInput: '/mvm/api' + '/comm/register/input.php'
+    commRegistInput: apiBaseUrl + '/comm/register/input.php',
+    commError: apiBaseUrl + 'comm/register/errorlog',
+    commUpdate: apiBaseUrl + 'comm/register/update'
 };
+
+// 各ページの表示件数
+var eachPageNum = 30;
 
 /**
  * カレンダーの文字列よりリクエスト用のフォーマットへの変換
@@ -44,10 +52,7 @@ var ajax = function(option) {
 		type: 'POST',
 		url: option.url,
     	data: option.data,
-        dataType: 'json',
     	cache: false,
-        processData: false,
-        contentType: false,
     	success: option.success,
     	error: function(){
     		if (option.error == undefined) {
@@ -58,6 +63,29 @@ var ajax = function(option) {
     	}
 	});
 };
+
+/**
+ * ファイルアップロード用
+ */
+var ajaxUpload = function(option) {
+    $.ajax({
+        type: 'POST',
+        url: option.url,
+        data: option.data,
+        dataType: 'json',
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: option.success,
+        error: function(){
+            if (option.error == undefined) {
+                alert("システムエラー発生しました。");
+            } else {
+                return option.error;
+            }
+        }
+    });   
+}
 
 var getYenText = function(num) {
 

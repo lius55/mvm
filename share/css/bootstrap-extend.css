@@ -26,6 +26,8 @@ body {
 }
 .container-extend input, .container-extend select {
 	border: 1px solid rgb(84, 130, 53);
+	color: black;
+	font-weight: bold;
 }
 /* ファイル選択 */
 .container-extend .file-control {
@@ -42,6 +44,8 @@ body {
 }
 .input-extend-m {
 	width: 300px;
+	display: inline-block;
+	margin-right: 10px;
 }
 .input-extend-s {
 	width: 180px;
@@ -54,9 +58,17 @@ body {
 	width: 30%;
 	vertical-align: middle;
 }
+.table-extend tr td:nth-child(2) {
+	color: black;
+	font-weight: bold;
+}
 .table-extend > tbody > tr > td {
 	border: 0px;
 	padding: 3px;
+}
+.table-extend .values {
+	color: black;
+	font-weight: bold;
 }
 /*4列テーブル*/
 .table-extend-4col {
@@ -109,15 +121,21 @@ body {
 	background-color: rgb(84, 130, 53);
 	color: white;
 	font-weight: bold;
-	border-bottom: 3px;
 	border: 1px solid white;
 	padding: 2px 5px;
+	text-align: center;
+	border-bottom: 5px solid white;
 }
 .list-table tr:nth-child(even) {
 	background-color: rgb(213, 227, 207);
 }
 .list-table tr:nth-child(odd) {
 	background-color: rgb(235, 241, 233);
+}
+.list-table >tbody > tr > td {
+	color: black;
+	vertical-align: middle;
+	padding: 2px 15px;
 }
 .switch {
 	width: 0;
@@ -159,14 +177,19 @@ body {
 .btn-grp-right {
 	text-align: right;
 }
+.btn-grp-left {
+	text-align: left;
+}
+.btn-grp-page {
+	padding: 6px 0;
+	color: black;
+}
 .panel-clicked {
 	display: none;
 }
-#update-container {
-	/*display: none;*/
-}
-
-/* 再計算ボタン */
-.btn-recal {
-	float: right;
+.btn-update {
+	background-color: rgb(169, 209, 142);
+	color: black;
+	font-weight: normal;
+    padding: 2px 5px;
 }

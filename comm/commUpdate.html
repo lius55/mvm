@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../share/css/bootstrap-datepicker3.min.css">
 <script src="../share/js/jquery-3.1.1.min.js"></script>
 <script src="../share/js/bootstrap.min.js"></script>
+<script src="../share/js/jquery.tmpl.min.js"></script>
 <script src="../share/js/moment-with-locales.js"></script>
 <script src="../share/js/bootstrap-datepicker.min.js"></script>
 <script src="../share/js/bootstrap-datepicker.ja.min.js"></script>
@@ -16,7 +17,7 @@
 <script src="./scripts/commUpdate.js"></script>
 </head>
 <body>
-	<div class="container container-extend">
+	<div class="container container-extend" id="detailListContainer">
 		<div class="well well-extend well-switch" for="switch">
 			<label class="label-extend label-switch">検索条件</label>
 		</div>
@@ -25,51 +26,184 @@
 				<tr>
 					<td>SIM電話番号</td>
 					<td>
-						<input type="text" class="form-control file-control">
+						<input type="text" class="form-control input-extend-m" id="simNumber">
 					</td>
 				</tr>
 				<tr>
 					<td>利用年月</td>
 					<td>
 						<div class="input-group calendar-month">
-				            <input type="text" class="form-control date"/>
+				            <input type="text" class="form-control date" placeholder="YYYY/MM" id="useDateMonth"/>
 				            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				        </div>
 					</td>
 				</tr>
 			</table>
+			<div class="btn-grp-right">
+				<button type="button" class="btn btn-extend btn-success" id="search">検索</button>
+				<button type="button" class="btn btn-extend btn-success" id="clear">クリア</button>
+			</div>
 		</div>
 		<div class="well well-extend">
 			<label class="label-extend">検査結果一覧</label>
 		</div>
+		<div class="panel-extend" id="detailList"></div>
 	</div>
 
-	<div class="container container-extend" id="update-container">
-		<div class="well well-extend">
-			<label class="label-extend label-switch">通話明細照会・更新</label>
-		</div>
-		<div id="switch" class="panel-extend-sm">
-			<table class="table-extend">
-				<tr><td>SIM電話番号</td><td></td></tr>
-				<tr><td>利用年月</td><td></td></tr>
-				<tr><td>請求年月</td><td></td></tr>
-				<tr><td>請求ステータス</td><td></td></tr>
-				<tr><td>契約ID</td><td></td></tr>
-				<tr><td>データ量合計（バイト）</td><td></td></tr>
-				<tr><td>データ量合計（パケット）</td><td></td></tr>
-				<tr><td>データ量合計（通信料）</td><td></td></tr>
-				<tr><td>通話レコード件数</td><td></td></tr>
-				<tr><td>通話レコード件数（自）</td><td></td></tr>
-				<tr><td>通話レコード件数（至）</td><td></td></tr>
-				<tr><td>通話量合計</td><td></td></tr>
-				<tr><td>商品コード</td><td></td></tr>
-				<tr><td>予備１</td><td></td></tr>
-				<tr><td>予備２</td><td></td></tr>
-				<tr><td>登録日時</td><td></td></tr>
-				<tr><td>更新日時</td><td></td></tr>
-				<tr><td>登録更新オペレーターID</td><td></td></tr>
-			</table>
-		</table>
-	</div>
+	<div class="container container-extend" id="detailInfoContainer" style="display: none;"></div>
 </body>
+
+<!--テンプレート定義-->
+<script type="text/html" id="detailListTemplate">
+	<div class="btn-grp-right btn-grp-page">
+		{{if index <= 1}}
+			<button type="button" class="btn btn-extend btn-disable">前へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index-1}">前へ</button>
+		{{/if}}
+		${index}/${pagenum}(合計${recordCount}件)
+		{{if index >= pagenum}}
+			<button type="button" class="btn btn-extend btn-disable">次へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index+1}">次へ</button>
+		{{/if}}
+	</div>
+	<table class="table list-table">
+		<tr>
+			<th></th>
+			<th>SIM電話番号</th>
+			<th>利用年月</th>
+		</tr>
+		{{each res}}
+		<tr>
+			<td><button type="button" class="btn btn-extend btn-update" value="${simNumber},${useDateMonth}">照会更新</button></td>
+			<td>${simNumber}</td>
+			<td>${useDateMonth}</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script type="text/html" id="detailInfoTemplate">
+	<div class="well well-extend">
+		<label class="label-extend label-switch">通話明細照会・更新</label>
+	</div>
+	<div id="switch" class="panel-extend">
+		<table class="table-extend">
+			<tr>
+				<td>SIM電話番号</td>
+				<td class="values">${simNumber}</td>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td class="values">${useDateMonth}</td>
+			</tr>
+			<tr>
+				<td>請求年月</td>
+				<td>
+					<div class="input-group calendar-month">
+				        <input type="text" class="form-control date" placeholder="YYYY/MM" value="${billDateMonth}" id="diBillDateMonth"/>
+				        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				    </div>
+				</td>
+			</tr>
+			<tr>
+				<td>請求ステータス</td>
+				<td>
+					<select class="form-control select-extend" id="diBillStatus">
+						{{if billStatus == '未' }}
+			        		<option value="未" selected="selected">未</option>
+			        		<option value="済">済</option>
+		        		{{else}}
+			        		<option value="未">未</option>
+			        		<option value="済" selected="selected">済</option>
+		        		{{/if}}
+		      		</select>
+				</td>
+			</tr>
+			<tr>
+				<td>契約ID</td>
+				<td class="values">${cntrctID}</td>
+			</tr>
+			<tr>
+				<td>データ量合計（バイト）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_byte}" id="diDataUsageByte"/>GB
+				</td>
+			</tr>
+			<tr>
+				<td>データ量合計（パケット）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_packet}" id="diDataUsagePacket"/>パケット
+				</td>
+			</tr>
+			<tr>
+				<td>データ量合計（通信料）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_commFree}" id="diUsageCommFree"/>円
+				</td>
+			</tr>
+			<tr>
+				<td>通話レコード件数</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${commRecordCount}" id="diCommRecordCount"/>件
+				</td>
+			</tr>
+			<tr>
+				<td>通話レコード件数（自）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${commUsageSpanCom}" id="diCommUsageSpanCom"/>
+				</td>
+			</tr>
+			<tr>
+				<td>通話レコード件数（至）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${commUsageSpanOut}" id="diCommUsageSpanOut"/>
+				</td>
+			</tr>
+			<tr>
+				<td>通話量合計</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${commFreeTotal}" id="diCommFreeTotal"/>円
+				</td>
+			</tr>
+			<tr>
+				<td>商品コード</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${productCode}" id="diProductCode"/>
+				</td>
+			</tr>
+			<tr>
+				<td>予備１</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${reserved1}" id="diReserved1"/>
+				</td>
+			</tr>
+			<tr>
+				<td>予備２</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${reserved2}" id="diReserved2"/>
+				</td>
+			</tr>
+			<tr>
+				<td>登録日時</td>
+				<td class="values">${registrationDate}</td>
+			</tr>
+			<tr>
+				<td>更新日時</td>
+				<td class="values">${updateDate}</td>
+			</tr>
+			<tr>
+				<td>登録更新オペレーターID</td>
+				<td class="values">${operatorID}</td>
+			</tr>
+		</table>
+		<div class="btn-grp-left">
+			<button type="button" class="btn btn-extend btn-success" id="update">更新</button>
+			<button type="button" class="btn btn-extend btn-success" id="cancel">キャンセル</button>
+		</div>
+		<input type="hidden" id="selectedSimNumber" value="${simNumber}"/>
+		<input type="hidden" id="selectedUseDateMonth" value="${useDateMonth}"/>
+	</div>
+</script>
 </html>
