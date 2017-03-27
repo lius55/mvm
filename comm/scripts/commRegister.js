@@ -6,7 +6,7 @@ $(function(){
 		formData.append("billDateMonth", getMonth($("#billDateMonth").val()));
 		formData.append("productCode", $("#productCode").val());
 
-		var requestHandler = function(response){
+		var responseHandler = function(response){
 			if (response.response == 'OK') {
 				alert("データ作成しました。")
 			} else {
@@ -17,7 +17,7 @@ $(function(){
 		ajaxUpload({
 			url: apiList.commRegistInput,
 			data: formData,
-			success: requestHandler
+			success: responseHandler
 		});
 
 	});;

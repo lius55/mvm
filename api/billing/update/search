@@ -1,0 +1,54 @@
+{
+	"recordCount": "31",
+	"res": 
+		[
+			{
+				"cntrctID": "cntrct001",
+				"billMonth": "yyyymm",
+				"billReportNumber": "billReportNumber",
+				"productCode": "productCode",
+				"useDateMonth": "yyyymm",
+				"salesDate": "YYYYMMDD",
+				"quantity": "123",
+				"taxExcludedPrice": "12345",
+				"reserved1": "",
+				"reserved2": ""
+			},
+			{
+				"cntrctID": "cntrct002",
+				"billMonth": "yyyymm",
+				"billReportNumber": "billReportNumber",
+				"productCode": "productCode",
+				"useDateMonth": "yyyymm",
+				"salesDate": "YYYYMMDD",
+				"quantity": "123",
+				"taxExcludedPrice": "12345",
+				"reserved1": "",
+				"reserved2": ""
+			},
+			{
+				"cntrctID": "cntrct003",
+				"billMonth": "yyyymm",
+				"billReportNumber": "billReportNumber",
+				"productCode": "productCode",
+				"useDateMonth": "yyyymm",
+				"salesDate": "YYYYMMDD",
+				"quantity": "123",
+				"taxExcludedPrice": "12345",
+				"reserved1": "",
+				"reserved2": ""
+			},
+			{
+				"cntrctID": "cntrct004",
+				"billMonth": "yyyymm",
+				"billReportNumber": "billReportNumber",
+				"productCode": "productCode",
+				"useDateMonth": "yyyymm",
+				"salesDate": "YYYYMMDD",
+				"quantity": "123",
+				"taxExcludedPrice": "12345",
+				"reserved1": "",
+				"reserved2": ""
+			}
+		]
+}

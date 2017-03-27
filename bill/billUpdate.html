@@ -1,4 +1,3 @@
-btn-recal
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +17,39 @@ btn-recal
 <script src="./scripts/billUpdate.js"></script>
 </head>
 <body>
-	<div class="container container-extend">
+	<div class="container container-extend"　id="billListContainer">
+		<div class="well well-extend well-switch" for="switch">
+			<label class="label-extend label-switch">検索条件</label>
+		</div>
+		<div id="switch" class="panel-extend-sm">
+			<table class="table-extend">
+				<tr>
+					<td>契約ID</td>
+					<td>
+						<input type="text" class="form-control input-extend-m" id="cntrctID">
+					</td>
+				</tr>
+				<tr>
+					<td>請求年月</td>
+					<td>
+						<div class="input-group calendar-month">
+				            <input type="text" class="form-control date" placeholder="YYYY/MM" id="billMonth"/>
+				            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				        </div>
+					</td>
+				</tr>
+			</table>
+			<div class="btn-grp-right">
+				<button type="button" class="btn btn-extend btn-success" id="search">検索</button>
+				<button type="button" class="btn btn-extend btn-success" id="clear">クリア</button>
+			</div>
+		</div>
+		<div class="well well-extend">
+			<label class="label-extend">検査結果一覧</label>
+		</div>
+		<div class="panel-extend" id="billList"></div>
+	</div>
+	<div class="container container-extend" id="billUpateContainer">
 		<!--請求情報-->
 		<div class="well well-extend well-switch" for="billInfo">
 			<label class="label-extend label-switch">請求情報</label>
@@ -69,6 +100,36 @@ btn-recal
 			</div>
 		</div>
 	</div>
+
+<script type="text/html" id="billListTemplate">
+	<div class="btn-grp-right btn-grp-page">
+		{{if index <= 1}}
+			<button type="button" class="btn btn-extend btn-disable">前へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index-1}">前へ</button>
+		{{/if}}
+		${index}/${pagenum}(合計${recordCount}件)
+		{{if index >= pagenum}}
+			<button type="button" class="btn btn-extend btn-disable">次へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index+1}">次へ</button>
+		{{/if}}
+	</div>
+	<table class="table list-table">
+		<tr>
+			<th></th>
+			<th>契約ID</th>
+			<th>請求年月</th>
+		</tr>
+		{{each res}}
+		<tr>
+			<td><button type="button" class="btn btn-extend btn-update" value="${cntrctID},${billMonth}">照会更新</button></td>
+			<td>${cntrctID}</td>
+			<td>${billMonth}</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
 <script type="text/html" id="billInfoTemplate">
 	<table class="table-extend-4col">
 		<tr>

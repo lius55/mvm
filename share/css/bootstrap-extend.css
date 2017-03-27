@@ -179,6 +179,7 @@ body {
 }
 .btn-grp-left {
 	text-align: left;
+	margin-bottom: 10px;
 }
 .btn-grp-page {
 	padding: 6px 0;
@@ -192,4 +193,11 @@ body {
 	color: black;
 	font-weight: normal;
     padding: 2px 5px;
+}
+.input-error {
+	/*border: 2px solid red;*/
+}
+.error {
+	/*display: inline-block;*/
+	color: red;
 }

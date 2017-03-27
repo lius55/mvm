@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>通話明細生成エラーログ照会</title>
+<link rel="stylesheet" href="../share/css/bootstrap.min.css">
+<link rel="stylesheet" href="../share/css/style.css">
+<link rel="stylesheet" href="../share/css/bootstrap-extend.css">
+<link rel="stylesheet" href="../share/css/bootstrap-datepicker3.min.css">
+<script src="../share/js/jquery-3.1.1.min.js"></script>
+<script src="../share/js/bootstrap.min.js"></script>
+<script src="../share/js/jquery.tmpl.min.js"></script>
+<script src="../share/js/moment-with-locales.js"></script>
+<script src="../share/js/bootstrap-datepicker.min.js"></script>
+<script src="../share/js/bootstrap-datepicker.ja.min.js"></script>
+<script src="../share/js/common.js"></script>
+<script src="./scripts/billError.js"></script>
+</head>
+<body>
+	<div class="container container-extend">
+		<div class="well well-extend well-switch" for="switch">
+			<label class="label-extend label-switch">検索条件</label>
+		</div>
+		<div id="switch" class="panel-extend-sm">
+			<table class="table-extend">
+				<tr>
+					<td>利用年月</td>
+					<td>
+						<div class="input-group calendar-month">
+			                <input type="text" class="form-control date" id="useDateMonth" placeholder="YYYY/MM"/>
+			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			            </div>
+					</td>
+				</tr>
+			</table>
+			<div class="btn-grp-right">
+				<button type="button" class="btn btn-extend btn-success" id="search">検索</button>
+				<button type="button" class="btn btn-extend btn-success" id="clear">クリア</button>
+			</div>
+		</div>
+		<div class="well well-extend">
+				<label class="label-extend label-switch">検索結果一覧</label>
+			</div>
+		<div class="panel-extend-sm" id="errorList"></div>
+	</div>
+
+<!--テンプレート定義-->
+<script type="text/html" id="errorListTemplate">
+	<div class="btn-grp-right btn-grp-page">
+		{{if index <= 1}}
+			<button type="button" class="btn btn-extend btn-disable">前へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index-1}">前へ</button>
+		{{/if}}
+		${index}/${pagenum}(合計${recordCount}件)
+		{{if index >= pagenum}}
+			<button type="button" class="btn btn-extend btn-disable">次へ</button>
+		{{else}}
+			<button type="button" class="btn btn-extend btn-success page-change" value="${index+1}">次へ</button>
+		{{/if}}
+	</div>
+	<table class="table list-table">
+		<tr>
+			<th>利用年月</th>
+			<th>通番</th>
+			<th>契約ID</th>
+			<th>契約者ID</th>
+			<th>SIM電話番号</th>
+			<th>エラー内容</th>
+		</tr>
+		{{each res}}
+		<tr>
+			<td>${useDateMonth}</td>
+			<td>${serialNumber}</td>
+			<td>${cntrctID}</td>
+			<td>${cntUserID}</td>
+			<td>${simNumber}</td>
+			<td>${errText}</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+</body>

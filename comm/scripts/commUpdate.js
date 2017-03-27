@@ -12,6 +12,9 @@ $(function(){
 
 	// 検索ボタンイベント
 	$("#search").on('click', function(){
+
+		// 入力チェック
+		validate($(".validate"));
 		currentSimNumber = $("#simNumber").val();
 		currentUseDateMonth = getMonth($("#useDateMonth").val());
 	});
@@ -55,6 +58,12 @@ $(function(){
 	    	minViewMode: 'months', // デフォルトを月選択に設定
 	    	language: 'ja'         // カレンダー日本語化のため
 		});
+		$(".month-day").datepicker({
+			format: 'mm/dd',
+			autoclose: true,
+			language: 'ja'
+		});
+		dataFormat($(".format"));
 	});
 
 	// キャンセルボタンイベント
@@ -107,7 +116,7 @@ $(function(){
 	};
 
 	var showDetailList = function(response) {
-		var response = $.parseJSON(response);
+		response = $.parseJSON(response);
 		response.index = parseInt(currentIndex);
 		response.pagenum = Math.ceil(parseInt(response.recordCount)/eachPageNum);
 		tempDetailList = response;
