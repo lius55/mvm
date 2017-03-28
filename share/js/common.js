@@ -133,6 +133,9 @@ var formatNumber = function(number) {
 
 var validate = function(target) {
 
+    /**
+     * エラー表示
+     */
     var showError = function(target, text) {
         var targetDiv = $(target).parent().find(".error");
         if (targetDiv.length < 1) {
@@ -257,6 +260,9 @@ var dataFormat = function(target) {
     });
 }
 
+/**
+ * Null判定
+ */
 var isNull = function(obj) {
     if (obj == undefined || (obj != undefined && obj.length < 1)) {
         return true;
