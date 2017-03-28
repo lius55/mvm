@@ -26,10 +26,10 @@ var apiBaseUrl = location.protocol + "//" + location.host + '/mvm/api/';
 // var apiBaseUrl = location.protocol + "//" + location.host + '/app/mvm/api/';
 // var apiBaseUrl = "http://ec2-52-68-169-84.ap-northeast-1.compute.amazonaws.com:10001/";
 var apiList = {
-    commRegistInput: apiBaseUrl + 'comm/register/input.php',
+    commRegistInput: apiBaseUrl + 'comm/register/input',
     commError: apiBaseUrl + 'comm/register/errorlog',
     commUpdateSearch: apiBaseUrl + 'comm/update/search', // TODO 検索API呼び出し
-    commUpdate: apiBaseUrl + 'comm/register/update',
+    commUpdate: apiBaseUrl + 'comm/update/update',
     commMonthly: apiBaseUrl + 'comm/register/monthly',
     billRegister: apiBaseUrl + 'billing/register/create',
     billError: apiBaseUrl + 'billing/register/errorlog',
@@ -137,11 +137,29 @@ var validate = function(target) {
      * エラー表示
      */
     var showError = function(target, text) {
+        
+        // TODO コメントを書く
         var targetDiv = $(target).parent().find(".error");
         if (targetDiv.length < 1) {
             targetDiv = $(target).parent().parent().find(".error");
         }
         $(targetDiv).text(text);
+
+        if ($(target).prop("tagName") == "INPUT") {
+            $(target).addClass("input-error");
+        }
+
+        // エラー表示解除
+        $(target).on('change', function() {
+            if ($(target).hasClass('input-error')) {
+                $(target).removeClass('input-error');
+            }
+            // 
+            if ($(targetDiv).hasClass('error')) {
+                $(targetDiv).text('');
+                $(targetDiv).removeClass('input-error');
+            }
+        });
     }
 
     /**
