@@ -1,6 +1,7 @@
 body {
 	overflow-y: auto;
 }
+
 .blockquote-extend {
 	border-left: 5px solid #385723;
 	margin: 5px;
@@ -70,7 +71,7 @@ body {
 	color: black;
 	font-weight: bold;
 }
-/*4列テーブル*/
+/* 4列テーブル */
 .table-extend-4col {
 	border-collapse:collapse;
 	width: 100%;
@@ -195,7 +196,7 @@ body {
     padding: 2px 5px;
 }
 .input-error {
-	/*border: 2px solid red;*/
+	border: 2px solid red !important;
 }
 .error {
 	/*display: inline-block;*/
