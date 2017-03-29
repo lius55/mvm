@@ -14,7 +14,8 @@ $(function(){
 	$("#search").on('click', function(){
 
 		// 入力チェック
-		validate($(".validate"));
+		// TODO validateクラスの整理
+		validate($("[validate]"));
 		currentSimNumber = $("#simNumber").val();
 		currentUseDateMonth = getMonth($("#useDateMonth").val());
 	});
@@ -30,7 +31,7 @@ $(function(){
 	});
 
 	// 照会更新ボタンイベント
-	$("#detailList").on('click', '.btn-update', function(){
+	$("#detailList").on('click', '.btn-inquery-update', function(){
 		var values = $(this).val();
 		if (values == undefined) {
 			return;
@@ -127,5 +128,5 @@ $(function(){
 	// ---------------
 	//    初期処理
 	// ---------------
-	getDetailList(currentSimNumber, currentUseDateMonth, currentIndex, showDetailList);
+	// getDetailList(currentSimNumber, currentUseDateMonth, currentIndex, showDetailList);
 });

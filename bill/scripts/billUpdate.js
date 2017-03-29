@@ -5,15 +5,6 @@ $(function(){
 	var currentBillMonth = getMonth($("#billMonth").val());
 	var tempBillList;
 
-	var data = {
-		cntrctID: 'Ka1234',
-		registrationDate: '2016-11-02 15:00',
-		billMonth: '2016/11',
-		updateDate: '2016-11-02 15:00'
-	}
-	// $.tmpl($("#billInfoTemplate"), data).appendTo("#billInfo");
-	// $.tmpl($("#billDataTemplate"), '').appendTo("#billData");
-
 	// クリアボタンイベント
 	$("#clear").on('click', function(){
 		$("#useDateMonth").val("");;
@@ -21,8 +12,11 @@ $(function(){
 
 	// 検索ボタンイベント
 	$("#search").on('click', function(){
+		// 入力チェック
+		if(validate($("[validate]"))) { return; }
 		currentSimNumber = $("#simNumber").val();
 		currentUseDateMonth = getMonth($("#useDateMonth").val());
+		getBillList(currentCntrctID, currentBillMonth, currentIndex, showBilllList);
 	});
 
 	// ページ変更イベント
@@ -59,30 +53,34 @@ $(function(){
 		tempDetailList = response;
 		$("#billList").empty();
 		$.tmpl($("#billListTemplate"), response).appendTo("#billList");
+		// データ整形
+		dataFormat($("[format]"));
+		initDatePicker($(".date"));
 	};
 
 	var showBillDetail = function(response) {
 		// 表示制御
-		$("#detailListContainer").hide();
-		$("#detailInfoContainer").show();
-		$("#detailInfoContainer").empty();
-		$.tmpl($("#detailInfoTemplate"), targetDetailInfo).appendTo("#detailInfoContainer");
-		// TODO カレンダー初期化
-		$("#diBillDateMonth").datepicker({
-			format: 'yyyy/mm',     // 日付フォマット
-	        autoclose: true,       // 自動閉じる
-	    	minViewMode: 'months', // デフォルトを月選択に設定
-	    	language: 'ja'         // カレンダー日本語化のため
-		});
-		$(".month-day").datepicker({
-			format: 'mm/dd',
-			autoclose: true,
-			language: 'ja'
-		});
+		$("#billListContainer").hide();
+		$("#billUpateContainer").show();
+
+		response = $.parseJSON(response);
+		// 請求情報表示
+		$("#billInfo").empty();
+		$("#billInfoTemplate").tmpl(response).appendTo("#billInfo");
+		// 請求データ表示
+		$("#billData").empty();
+		$("#billDataTemplate").tmpl(response).appendTo("#billData");
+		// 請求詳細データ表示
+		$("#billDetail").empty();
+		$("#billDetailTemplate").tmpl(response).appendTo("#billDetail");
+
+		// データ表示整形処理
+		dataFormat($("[format]"));
+		initDatePicker($(".date"));
 	}
 
 	// 照会更新ボタンイベント
-	$("#billList").on('click', '.btn-update', function(){
+	$("#billList").on('click', '.btn-inquery-update', function(){
 		var values = $(this).val();
 		if (values == undefined) { return; }
 
@@ -94,14 +92,64 @@ $(function(){
 			url: apiList.billUpdateShow,
 			data: {
 				cntrctID: cntrctID,
-				billDateMonth: billDateMonth
+				billMonth: billMonth
 			},
 			success: showBillDetail
 		});
 	});
 
+	$("#billInfo").on('click', '.btn-update', function(){
+		// 入力チェック
+		if(validate($("[validate]"))) { return; }
+
+  		// 請求明細情報取得
+  		var billingReportInfo = new Array();
+  		$.each($(".billDetail"), function(index, element) {
+  			var billInfoParam = {
+  				cntrctID: $("#billInfo").find("[name=cntrctID]").val(),
+  				billMonth: $("#billInfo").find("[name=billMonth]").val(),
+  				billReportNumber: $(this).find("[name=billReportNumber]").val(),
+  				productCode: $(this).find("[name=productCode]").val(),
+  				useDateMonth: $(this).find("[name=useDateMonth]").val(),
+  				salesDate: $(this).find("[name=salesDate]").val(),
+  				quantity: $(this).find("[name=quantity]").val(),
+  				taxExcludedPrice: $(this).find("[name=taxExcludedPrice]").val(),
+  				reserved1: $(this).find("[name=reserved1]").val(),
+  				reserved2: $(this).find("[name=reserved2]").val()
+  			}
+  			billingReportInfo.push(billInfoParam);
+  		});
+
+  		// 請求データ情報取得
+  		var requestParam = {
+  			cntrctID:　$("#billInfo").find("[name=cntrctID]").val(),
+  			billMonth: $("#billInfo").find("[name=billMonth]").val(),
+  			billingDate: $("#billData").find("[name=billingDate]").val(),
+  			billMethod: $("#billData").find("[name=billMethod]").val(),
+  			acTranReqNum: $("#billData").find("[name=acTranReqNum]").val(),
+  			transferResult: $("#billData").find("[name=transferResult]").val(),
+  			transferResultDate: $("#billData").find("[name=transferResultDate]").val(),
+  			billingReportInfo: billingReportInfo
+  		};
+
+  		var updateSuccess = function(){
+  			alert("更新完了しました。");
+  		};
+
+  		ajax({
+  			url: apiList.billUpdate,
+  			data: requestParam,
+  			success: updateSuccess
+  		});
+	});
+
+	$("#billInfo").on('click', '.btn-cancel', function(){
+		$("#billListContainer").show();
+		$("#billUpateContainer").hide();
+	});
+
 	// ---------------
 	//    初期処理
 	// ---------------
-	getBillList(currentCntrctID, currentBillMonth, currentIndex, showBilllList);
+	// getBillList(currentCntrctID, currentBillMonth, currentIndex, showBilllList);
 });

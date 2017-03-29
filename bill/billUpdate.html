@@ -17,7 +17,8 @@
 <script src="./scripts/billUpdate.js"></script>
 </head>
 <body>
-	<div class="container container-extend"　id="billListContainer">
+	<!--一覧検索画面-->
+	<div class="container-extend" id="billListContainer">
 		<div class="well well-extend well-switch" for="switch">
 			<label class="label-extend label-switch">検索条件</label>
 		</div>
@@ -26,16 +27,18 @@
 				<tr>
 					<td>契約ID</td>
 					<td>
-						<input type="text" class="form-control input-extend-m" id="cntrctID">
+						<input type="text" class="form-control input-extend-m" id="cntrctID" validate="mst,ac" max-len="10">
+						<div class="error"></div>
 					</td>
 				</tr>
 				<tr>
 					<td>請求年月</td>
 					<td>
 						<div class="input-group calendar-month">
-				            <input type="text" class="form-control date" placeholder="YYYY/MM" id="billMonth"/>
+				            <input type="text" class="form-control date" placeholder="YYYY/MM" id="billMonth" validate="mst,ym"/>
 				            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				        </div>
+				        <div class="error"></div>
 					</td>
 				</tr>
 			</table>
@@ -47,9 +50,11 @@
 		<div class="well well-extend">
 			<label class="label-extend">検査結果一覧</label>
 		</div>
-		<div class="panel-extend" id="billList"></div>
+		<div class="panel-extend-sm" id="billList"></div>
 	</div>
-	<div class="container container-extend" id="billUpateContainer">
+
+	<!--更新画面-->
+	<div class="container-extend" id="billUpateContainer" style="display: none;">
 		<!--請求情報-->
 		<div class="well well-extend well-switch" for="billInfo">
 			<label class="label-extend label-switch">請求情報</label>
@@ -60,47 +65,11 @@
 			<label class="label-extend label-switch">請求データ</label>
 		</div>
 		<div id="billData" class="panel-extend-sm"></div>
-		<!--請求明細データ(1)-->
-		<div class="well well-extend well-switch" for="billDetail1">
-			<label class="label-extend label-switch">請求明細データ(1)</label>
-		</div>
-		<div id="billDetail1" class="panel-extend-sm"></div>
-		<!--請求明細データ(2)-->
-		<div class="well well-extend well-switch" for="billDetail2">
-			<label class="label-extend label-switch">請求明細データ(2)</label>
-		</div>
-		<div id="billDetail2" class="panel-extend-sm">
-			<table class="table-extend">
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-			<div>
-				<button type="button" class="btn btn-extend btn-success">更新</button>
-			</div>
-		</div>
-		<!--請求明細データ(3)-->
-		<div class="well well-extend well-switch" for="billDetail3">
-			<label class="label-extend label-switch">請求明細データ(3)</label>
-		</div>
-		<div id="billDetail3" class="panel-extend-sm">
-			<table class="table-extend">
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-			<div>
-				<button type="button" class="btn btn-extend btn-success">更新</button>
-			</div>
-		</div>
+		<div id="billDetail"></div>
 	</div>
 
+
+<!--一覧表示テンプレート-->
 <script type="text/html" id="billListTemplate">
 	<div class="btn-grp-right btn-grp-page">
 		{{if index <= 1}}
@@ -123,122 +92,175 @@
 		</tr>
 		{{each res}}
 		<tr>
-			<td><button type="button" class="btn btn-extend btn-update" value="${cntrctID},${billMonth}">照会更新</button></td>
+			<td><button type="button" class="btn btn-extend btn-inquery-update" value="${cntrctID},${billMonth}">照会更新</button></td>
 			<td>${cntrctID}</td>
-			<td>${billMonth}</td>
+			<td format="ym">${billMonth}</td>
 		</tr>
 		{{/each}}
 	</table>
 </script>
+<!--請求情報テンプレート-->
 <script type="text/html" id="billInfoTemplate">
 	<table class="table-extend-4col">
 		<tr>
 			<td>契約ID</td>
-			<td class="values">${cntrctID}</td>
+			<td class="values">${cntrctID}<input type="hidden" value="${cntrctID}" name="cntrctID"/></td>
 			<td>登録日時</td>
-			<td class="values">${registrationDate}</td>
+			<td class="values"></td>
 		</tr>
 		<tr>
 			<td>請求年月</td>
-			<td class="values">${billMonth}</td>
+			<td class="values" format="ym">${billMonth}<input type="hidden" value="${billMonth}" name="billMonth"/></td>
 			<td>更新日時</td>
 			<td class="values">${updateDate}</td>
 		</tr>
 		<tr>
 			<td>請求合計（税抜）</td>
-			<td class="values"></td>
+			<td class="values" format="num">${taxExcludedPrice}</td>
 			<td>登録更新オペレータID</td>
-			<td class="values"></td>
+			<td class="values">${operatorID}</td>
 		</tr>
 		<tr>
 			<td>消費税</td>
-			<td class="values"></td>
+			<td class="values" format="num">${tax}</td>
 		</tr>
 		<tr>
 			<td>請求合計（税込）</td>
-			<td class="values"></td>
+			<td class="values" format="num">${taxInclusivePrice}</td>
 		</tr>
 	</table>
 	<div>
-		<button type="button" class="btn btn-extend btn-success">更新</button>
-		<button type="button" class="btn btn-extend btn-success">キャンセル</button>
-		<button type="button" class="btn btn-extend btn-success btn-grp-right">再計算</button>
+		<button type="button" class="btn btn-extend btn-success btn-update">更新</button>
+		<button type="button" class="btn btn-extend btn-success btn-cancel">キャンセル</button>
+		<button type="button" class="btn btn-extend btn-success btn-right">再計算</button>
 	</div>
 </script>
+<!--請求データテンプレート-->
 <script type="text/html" id="billDataTemplate">
 	<table class="table table-extend">
 		<tr>
 			<td>請求日</td>
 			<td>
 				<div class="input-group calendar-date">
-					<input type="text" class="form-control date"/>
+					<input type="text" class="form-control date" value="${billingDate}" name="billingDate" format="ymd" validate="ymd"/>
 			    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
 			    </div>
+			    <div class="error"></div>
 			</td>
 		</tr>
 		<tr>
 			<td>支払方法</td>
 			<td>
-				<select class="form-control select-extend">
-	        		<option value="1" selected="selected">クレカ</option>
-	        		<option value="2">3200</option>
+				<select class="form-control select-extend" name="billMethod">
+	        		<option value="0" {{if billMethod == 0}}selected{{/if}}>クレカ</option>
+	        		<option value="1" {{if billMethod == 1}}selected{{/if}}>口振</option>
+	        		<option value="2" {{if billMethod == 2}}selected{{/if}}>社内1</option>
+	        		<option value="3" {{if billMethod == 3}}selected{{/if}}>社内2</option>
+	        		<option value="4" {{if billMethod == 4}}selected{{/if}}>社内3</option>
+	        		<option value="5" {{if billMethod == 5}}selected{{/if}}>社内4</option>
+	        		<option value="6" {{if billMethod == 6}}selected{{/if}}>社内5</option>
+	        		<option value="7" {{if billMethod == 7}}selected{{/if}}>請求外</option>
 	      		</select>
 			</td>
 		</tr>
 		<tr>
 			<td>口座依頼書番号</td>
-			<td><input type="text" class="form-control input-extend-m"/></td>
+			<td>
+				<input type="text" class="form-control input-extend-m" value="${acTranReqNum}" name="acTranReqNum" validate="ac" max-len="16"/>
+				<div class="error"></div>
+			</td>
 		</tr>
 		<tr>
 			<td>振替結果</td>
-			<td><input type="text" class="form-control input-extend-m"/></td>
+			<td><input type="text" class="form-control input-extend-m" value="${transferResult}" name="transferResult" validate="num" min="0" max="999"/><div class="error"></div></td>
 		</tr>
 		<tr>
 			<td>振替結果登録日</td>
 			<td>
 				<div class="input-group calendar-date">
-					<input type="text" class="form-control date"/>
+					<input type="text" class="form-control date" value="${transferResultDate}" name="transferResultDate" format="ymd" validate="ymd"/>
 			    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
 			    </div>
+			    <div class="error"></div>
 			</td>
 		</tr>
 	</table>
 </script>
+<!--請求明細データテンプレート-->
 <script type="text/html" id="billDetailTemplate">
-	<table class="table table-extend">
-		<tr>
-			<td>連番</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>商品コード</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>利用年月</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>販売日</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>数量</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>請求額（税抜）</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>予備１</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>予備２</td>
-			<td></td>
-		</tr>
-	</table>
+	{{each billingReportInfo}}
+	<div class="well well-extend well-switch" for="billDetail${$index}">
+		<label class="label-extend label-switch">請求明細データ(${$index+1})</label>
+	</div>
+	<div id="billDetail${$index}" class="panel-extend-sm billDetail">
+		<table class="table table-extend">
+			<tr>
+				<td>連番</td>
+				<td>
+					${billReportNumber}
+					<input type="hidden" name="billReportNumber" value="${billReportNumber}">
+				</td>
+			</tr>
+			<tr>
+				<td>商品コード</td>
+				<td>
+					<select class="form-control select-extend" name="productCode">
+						<option value="3100" {{if productCode == 3100}}selected{{/if}}>3100</option>
+						<option value="3200" {{if productCode == 3200}}selected{{/if}}>3200</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>利用年月</td>
+				<td>
+					<div class="input-group calendar-date">
+						<input type="text" class="form-control date" value="${useDateMonth}" name="useDateMonth" format="ym" validate="ym"/>
+			    		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
+				    </div>
+				    <div class="error"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>販売日</td>
+				<td>
+					<div class="input-group calendar-date">
+						<input type="text" class="form-control date" value="${salesDate}" name="salesDate" format="ymd" validate="ymd"/>
+			    		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
+				    </div>
+				    <div class="error"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>数量</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${quantity}" name="quantity" format="num" validate="num" min="0" max="99"/>
+					<div class="error"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>請求額（税抜）</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${taxExcludedPrice}" name="taxExcludedPrice" format="num" validate="num" min="0" max="9999999"/>円
+					<div class="error"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>予備１</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${reserved1}" name="reserved1" validate="ac" maxLen="20"/>
+					<div class="error"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>予備２</td>
+				<td>
+					<input type="text" class="form-control input-extend-m" value="${reserved2}" name="reserved2" validate="ac" maxLen="20"/>
+					<div class="error"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	{{/each}}
 </script>
 </body>
 </html>

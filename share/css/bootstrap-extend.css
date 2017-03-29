@@ -186,10 +186,13 @@ body {
 	padding: 6px 0;
 	color: black;
 }
+.btn-right {
+	float: right;
+}
 .panel-clicked {
 	display: none;
 }
-.btn-update {
+.btn-inquery-update {
 	background-color: rgb(169, 209, 142);
 	color: black;
 	font-weight: normal;
@@ -201,4 +204,7 @@ body {
 .error {
 	/*display: inline-block;*/
 	color: red;
+}
+.invisible {
+	display: none;
 }
