@@ -1,8 +1,8 @@
 $(function(){
 
 	$("#createData").on('click', function(){
-		// TODO 入力チェック
-		createData(formatDate($("#useDateMonth").val()), formatDate($("#billDateMonth").val()));
+		if(validate($("[validate]"))) { return; }
+		createData(getParamValue($("#useDateMonth")), getParamValue($("#billDateMonth")));
 	});
 
 	var createData = function(useDateMonth, billDateMonth) {

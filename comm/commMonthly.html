@@ -27,18 +27,20 @@
 					<td>利用年月</td>
 					<td>
 						<div class="input-group calendar-month">
-			                <input type="text" class="form-control date" id="useDateMonth"/>
+			                <input type="text" class="form-control date" id="useDateMonth" validate="mst,ym" format="ym" label="利用年月" err-msg="利用年月を入力してください。"/>
 			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			            </div>
+			            <div class="error calendar-error"></div>
 					</td>
 				</tr>
 				<tr>
 					<td>請求年月</td>
 					<td>
 						<div class="input-group calendar-month">
-			                <input type="text" class="form-control date" id="billDateMonth"/>
+			                <input type="text" class="form-control date" id="billDateMonth" validate="mst,ym" format="ym" label="請求年月" err-msg="請求年月を入力してください。"/>
 			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			            </div>
+			            <div class="error calendar-error"></div>
 					</td>
 				</tr>
 				<tr>

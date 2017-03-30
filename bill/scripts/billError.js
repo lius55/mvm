@@ -25,14 +25,13 @@ $(function(){
 		response.pagenum = Math.ceil(parseInt(response.recordCount)/eachPageNum);
 		$("#errorList").empty();
 		$.tmpl($("#errorListTemplate"), response).appendTo("#errorList");
+		dataFormat($("[format]"));
 	};
 
 	// 検索ボタンイベント
 	$("#search").on('click', function(){
-		if($("#useDateMonth").val().length < 1) {
-			alert("利用年月入力してください。");
-		}
-		currentUseDateMonth = getMonth($("#useDateMonth").val());
+		if(validate($("[validate]"))) { return; }
+		currentUseDateMonth = getParamValue($("#useDateMonth"));
 		getErrorList(currentUseDateMonth, currentIndex, showErrorList);
 	});
 

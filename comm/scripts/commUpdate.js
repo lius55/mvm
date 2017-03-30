@@ -2,7 +2,7 @@ $(function(){
 
 	var currentIndex = 1;
 	var currentSimNumber = $("#simNumber").val();
-	var currentUseDateMonth = getMonth($("#useDateMonth").val());
+	var currentUseDateMonth = getParamValue($("#useDateMonth"));
 	var tempDetailList;
 
 	// クリアボタンイベント
@@ -14,10 +14,10 @@ $(function(){
 	$("#search").on('click', function(){
 
 		// 入力チェック
-		// TODO validateクラスの整理
-		validate($("[validate]"));
+		if(validate($("[validate]"))) { return; }
 		currentSimNumber = $("#simNumber").val();
-		currentUseDateMonth = getMonth($("#useDateMonth").val());
+		currentUseDateMonth = getParamValue($("#useDateMonth"));
+		getDetailList(currentSimNumber, currentUseDateMonth, currentIndex, showDetailList);
 	});
 
 	// ページ変更イベント
@@ -52,19 +52,9 @@ $(function(){
 		$("#detailInfoContainer").show();
 		$("#detailInfoContainer").empty();
 		$.tmpl($("#detailInfoTemplate"), targetDetailInfo).appendTo("#detailInfoContainer");
-		// TODO カレンダー初期化
-		$("#diBillDateMonth").datepicker({
-			format: 'yyyy/mm',     // 日付フォマット
-	        autoclose: true,       // 自動閉じる
-	    	minViewMode: 'months', // デフォルトを月選択に設定
-	    	language: 'ja'         // カレンダー日本語化のため
-		});
-		$(".month-day").datepicker({
-			format: 'mm/dd',
-			autoclose: true,
-			language: 'ja'
-		});
-		dataFormat($(".format"));
+		// カレンダー初期化
+		initDatePicker($(".date"));
+		dataFormat($("[format]"));
 	});
 
 	// キャンセルボタンイベント
@@ -76,32 +66,44 @@ $(function(){
 
 	// アップデートボタンイベント
 	$("#detailInfoContainer").on('click', "#update", function(){
+		// 入力チェック
+		if(validate($("[validate]"))) { return; }
 
+		// リクエストパラメターター情報取得
 		var paramSimNumber = $("#selectedSimNumber").val();
 		var paramUseDateMonth = $("#selectedUseDateMonth").val();
-	
-		// TODO データフォーマットの変換
 		var detailInfo = {
 			simNumber: paramSimNumber,
 			useDateMonth: paramUseDateMonth,
-			billDateMonth: $("diBillDateMonth").val(),
+			billDateMonth: getParamValue($("diBillDateMonth")),
 			billStatus: $("#diBillStatus").val(),
-			dataUsage_byte: $("#diDataUsageByte").val(),
-			dataUsage_packet: $("#diDataUsagePacket").val(),
-			dataUsage_commFree: $("#diDataUsageCommFree").val(),
-			commRecordCount: $("#diCommRecordCount").val(),
-			commUsageSpanCom: $("#diCommUsageSpanCom").val(),
-			commUsageSpanOut: $("#diCommUsageSpanOut").val(),
-			commFreeTotal: $("#diCommFreeTotal").val(),
+			dataUsage_byte: getParamValue($("#diDataUsageByte")),
+			dataUsage_packet: getParamValue($("#diDataUsagePacket")),
+			dataUsage_commFree: getParamValue($("#diDataUsageCommFree")),
+			commRecordCount: getParamValue($("#diCommRecordCount")),
+			commUsageSpanCom: getParamValue($("#diCommUsageSpanCom")),
+			commUsageSpanOut: getParamValue($("#diCommUsageSpanOut")),
+			commFreeTotal: getParamValue($("#diCommFreeTotal")),
 			productCode: $("#diProductCode").val(),
 			reserved1: $("#diReserved1").val(),
 			reserved2: $("#diReserved2").val(),
 		};
+
+		var success = function() {
+			alert("更新完了しました。");
+		};
+ 
+		ajax({
+			url: apiList.commUpdate,
+			data: detailInfo,
+			success: success
+		});
 	});
 
 	var getDetailList = function(simNumber, useDateMonth, index, success) {
 
-		// TODO 必須チェック
+		if(validate($("[validate]"))) { return; }
+
 		var requestParam = {
 			simNumber: simNumber,
 			useDateMonth: useDateMonth,
@@ -110,7 +112,7 @@ $(function(){
 		};
 
 		ajax({
-			url: apiList.commUpdate,
+			url: apiList.commUpdateSearch,
 			data: requestParam,
 			success: success
 		});
@@ -123,6 +125,7 @@ $(function(){
 		tempDetailList = response;
 		$("#detailList").empty();
 		$.tmpl($("#detailListTemplate"), response).appendTo("#detailList");
+		dataFormat($("[format]"));
 	};
 
 	// ---------------

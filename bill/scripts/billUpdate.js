@@ -2,20 +2,21 @@ $(function(){
 
 	var currentIndex = 1;
 	var currentCntrctID = $("#cntrctID").val();
-	var currentBillMonth = getMonth($("#billMonth").val());
+	var currentBillMonth = getParamValue($("#billMonth"));
 	var tempBillList;
 
 	// クリアボタンイベント
 	$("#clear").on('click', function(){
-		$("#useDateMonth").val("");;
+		$("#cntrctID").val('');
+		$("#billMonth").val('');
 	});
 
 	// 検索ボタンイベント
 	$("#search").on('click', function(){
 		// 入力チェック
 		if(validate($("[validate]"))) { return; }
-		currentSimNumber = $("#simNumber").val();
-		currentUseDateMonth = getMonth($("#useDateMonth").val());
+		currentCntrctID = $("#cntrctID").val();
+		currentBillMonth = getParamValue($("#billMonth"));
 		getBillList(currentCntrctID, currentBillMonth, currentIndex, showBilllList);
 	});
 
@@ -107,13 +108,13 @@ $(function(){
   		$.each($(".billDetail"), function(index, element) {
   			var billInfoParam = {
   				cntrctID: $("#billInfo").find("[name=cntrctID]").val(),
-  				billMonth: $("#billInfo").find("[name=billMonth]").val(),
+  				billMonth: getParamValue($("#billInfo").find("[name=billMonth]")),
   				billReportNumber: $(this).find("[name=billReportNumber]").val(),
   				productCode: $(this).find("[name=productCode]").val(),
-  				useDateMonth: $(this).find("[name=useDateMonth]").val(),
-  				salesDate: $(this).find("[name=salesDate]").val(),
-  				quantity: $(this).find("[name=quantity]").val(),
-  				taxExcludedPrice: $(this).find("[name=taxExcludedPrice]").val(),
+  				useDateMonth: getParamValue($(this).find("[name=useDateMonth]")),
+  				salesDate: getParamValue($(this).find("[name=salesDate]")),
+  				quantity: getParamValue($(this).find("[name=quantity]")),
+  				taxExcludedPrice: getParamValue($(this).find("[name=taxExcludedPrice]")),
   				reserved1: $(this).find("[name=reserved1]").val(),
   				reserved2: $(this).find("[name=reserved2]").val()
   			}
@@ -123,12 +124,12 @@ $(function(){
   		// 請求データ情報取得
   		var requestParam = {
   			cntrctID:　$("#billInfo").find("[name=cntrctID]").val(),
-  			billMonth: $("#billInfo").find("[name=billMonth]").val(),
-  			billingDate: $("#billData").find("[name=billingDate]").val(),
+  			billMonth: getParamValue($("#billInfo").find("[name=billMonth]")),
+  			billingDate: getParamValue($("#billData").find("[name=billingDate]")),
   			billMethod: $("#billData").find("[name=billMethod]").val(),
   			acTranReqNum: $("#billData").find("[name=acTranReqNum]").val(),
-  			transferResult: $("#billData").find("[name=transferResult]").val(),
-  			transferResultDate: $("#billData").find("[name=transferResultDate]").val(),
+  			transferResult: getParamValue($("#billData").find("[name=transferResult]")),
+  			transferResultDate: getParamValue($("#billData").find("[name=transferResultDate]")),
   			billingReportInfo: billingReportInfo
   		};
 

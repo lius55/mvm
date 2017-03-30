@@ -4,7 +4,7 @@
 		[
 			{
 				"cntrctID": "cntrct001",
-				"billMonth": "yyyymm",
+				"billMonth": "201701",
 				"billReportNumber": "billReportNumber",
 				"productCode": "productCode",
 				"useDateMonth": "yyyymm",
@@ -16,7 +16,7 @@
 			},
 			{
 				"cntrctID": "cntrct002",
-				"billMonth": "yyyymm",
+				"billMonth": "201702",
 				"billReportNumber": "billReportNumber",
 				"productCode": "productCode",
 				"useDateMonth": "yyyymm",
@@ -28,7 +28,7 @@
 			},
 			{
 				"cntrctID": "cntrct003",
-				"billMonth": "yyyymm",
+				"billMonth": "201703",
 				"billReportNumber": "billReportNumber",
 				"productCode": "productCode",
 				"useDateMonth": "yyyymm",
@@ -40,7 +40,7 @@
 			},
 			{
 				"cntrctID": "cntrct004",
-				"billMonth": "yyyymm",
+				"billMonth": "201704",
 				"billReportNumber": "billReportNumber",
 				"productCode": "productCode",
 				"useDateMonth": "yyyymm",

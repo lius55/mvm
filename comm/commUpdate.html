@@ -26,7 +26,7 @@
 				<tr>
 					<td>SIM電話番号</td>
 					<td>
-						<input type="text" class="form-control input-extend-m validate" id="simNumber" validate="mst,g">
+						<input type="text" class="form-control input-extend-m" id="simNumber" validate="mst,ac" placeholder="000-0000-0000">
 						<div class="error"></div>
 					</td>
 				</tr>
@@ -34,7 +34,7 @@
 					<td>利用年月</td>
 					<td>
 						<div class="input-group calendar-month">
-				            <input type="text" class="form-control date validate" placeholder="YYYY/MM" id="useDateMonth" validate="mst,ym"/>
+				            <input type="text" class="form-control date" placeholder="YYYY/MM" id="useDateMonth" validate="mst,ym" format="ym"/>
 				            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				        </div>
 				        <div class="error calenar-month"></div>
@@ -57,6 +57,9 @@
 
 <!--テンプレート定義-->
 <script type="text/html" id="detailListTemplate">
+	{{if recordCount < 1}}
+		検索結果がありませんでした。
+	{{else}}
 	<div class="btn-grp-right btn-grp-page">
 		{{if index <= 1}}
 			<button type="button" class="btn btn-extend btn-disable">前へ</button>
@@ -79,11 +82,12 @@
 		{{each res}}
 		<tr>
 			<td><button type="button" class="btn btn-extend btn-inquery-update" value="${simNumber},${useDateMonth}">照会更新</button></td>
-			<td>${simNumber}</td>
-			<td>${useDateMonth}</td>
+			<td format="msn">${simNumber}</td>
+			<td format="ym">${useDateMonth}</td>
 		</tr>
 		{{/each}}
 	</table>
+	{{/if}}
 </script>
 
 <script type="text/html" id="detailInfoTemplate">
@@ -94,7 +98,7 @@
 		<table class="table-extend">
 			<tr>
 				<td>SIM電話番号</td>
-				<td class="values">${simNumber}</td>
+				<td class="values" format="msn">${simNumber}</td>
 			</tr>
 			<tr>
 				<td>利用年月</td>
@@ -104,24 +108,19 @@
 				<td>請求年月</td>
 				<td>
 					<div class="input-group calendar-month">
-				        <input type="text" class="form-control date format" placeholder="YYYY/MM" value="${billDateMonth}" id="diBillDateMonth" format="ym"/>
+				        <input type="text" class="form-control date format" placeholder="YYYY/MM" value="${billDateMonth}" id="diBillDateMonth" format="ym" validate="ym" label="請求年月"/>
 				        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				    </div>
+				    <div class="error calendar-error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>請求ステータス</td>
-				<!--TODO 0:未/1:済-->
 				<td>
-					<select class="form-control select-extend" id="diBillStatus">
-						{{if billStatus == '未' }}
-			        		<option value="未" selected="selected">未</option>
-			        		<option value="済">済</option>
-		        		{{else}}
-			        		<option value="未">未</option>
-			        		<option value="済" selected="selected">済</option>
-		        		{{/if}}
-		      		</select>
+		      		<select class="form-control select-extend" id="diBillStatus">
+						<option value="0" {{if billStatus == 0}}selected{{/if}}>未</option>
+						<option value="1" {{if billStatus == 1}}selected{{/if}}>済</option>
+					</select>
 				</td>
 			</tr>
 			<tr>
@@ -131,67 +130,79 @@
 			<tr>
 				<td>データ量合計（バイト）</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${dataUsage_byte}" id="diDataUsageByte"/>GB
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_byte}" id="diDataUsageByte" format="num" validate="num" min="0" max="99999999999999" label="データ量合計（バイト）"/>GB
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>データ量合計（パケット）</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${dataUsage_packet}" id="diDataUsagePacket"/>パケット
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_packet}" id="diDataUsagePacket" format="num" validate="num" min="0" max="999999999999" label="データ量合計（パケット）"/>パケット
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>データ量合計（通信料）</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${dataUsage_commFree}" id="diUsageCommFree"/>円
+					<input type="text" class="form-control input-extend-m" value="${dataUsage_commFree}" id="diUsageCommFree" format="num" validate="num" min="0" max="999999999999" label="データ量合計（通信料）"/>円
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>通話レコード件数</td>
 				<td>
-					<input type="text" class="form-control input-extend-m format" value="${commRecordCount}" id="diCommRecordCount" format="num"/>件
+					<input type="text" class="form-control input-extend-m" value="${commRecordCount}" id="diCommRecordCount" format="num" validate="num" min="0" max="999999" label="通話レコード件数"/>件
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>通話レコード件数（自）</td>
 				<td>
 					<div class="input-group calendar-month">
-				        <input type="text" class="form-control month-day format" placeholder="MM/DD" value="${commUsageSpanCom}"" id="diCommUsageSpanCom" format="md"/>
+				        <input type="text" class="form-control date" placeholder="MM/DD" value="${commUsageSpanCom}"" id="diCommUsageSpanCom" format="md" validate="md" label="通話レコード件数（自）"/>
 				        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				    </div>
+				    <div class="error calendar-error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>通話レコード件数（至）</td>
 				<td>
 					<div class="input-group calendar-month">
-				        <input type="text" class="form-control month-day format" placeholder="MM/DD" value="${commUsageSpanOut}"" id="diCommUsageSpanOut" format="md"/>
+				        <input type="text" class="form-control date" placeholder="MM/DD" value="${commUsageSpanOut}"" id="diCommUsageSpanOut" format="md" validate="md" label="通話レコード件数（至）"/>
 				        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				    </div>
+				   	<div class="error calendar-error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>通話量合計</td>
 				<td>
-					<input type="text" class="form-control input-extend-m format" value="${commFreeTotal}" id="diCommFreeTotal" format="num"/>円
+					<input type="text" class="form-control input-extend-m" value="${commFreeTotal}" id="diCommFreeTotal" format="num" validate="num" label="通話量合計"/>円
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>商品コード</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${productCode}" id="diProductCode"/>
+					<select class="form-control select-extend" id="diProductCode">
+						<option value="3100" {{if productCode == 3100}}selected{{/if}}>3100</option>
+						<option value="3200" {{if productCode == 3200}}selected{{/if}}>3200</option>
+					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>予備１</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${reserved1}" id="diReserved1"/>
+					<input type="text" class="form-control input-extend-m" value="${reserved1}" id="diReserved1" validate="ac" max-len="20" label="予備１"/>
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>
 				<td>予備２</td>
 				<td>
-					<input type="text" class="form-control input-extend-m" value="${reserved2}" id="diReserved2"/>
+					<input type="text" class="form-control input-extend-m" value="${reserved2}" id="diReserved2" validate="ac" max-len="20" label="予備２"/>
+					<div class="error"></div>
 				</td>
 			</tr>
 			<tr>

@@ -3,6 +3,9 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+// -------------
+//   初期化処理
+// -------------
 $(function() {
 
 	// 三角形付きlabelの表示切り替え制御
@@ -15,6 +18,7 @@ $(function() {
 		$(this).toggleClass('clicked');
 	});
 
+    // TODO
 	// datepicker設定
     $('.date').datepicker({
     	format: 'yyyy/mm',     // 日付フォマット
@@ -105,10 +109,6 @@ var ajaxUpload = function(option) {
     });   
 }
 
-var getYenText = function(num) {
-
-};
-
 /**
  * 日付文字列の「/」削除
  * 2016/01⇒201601
@@ -133,13 +133,39 @@ var showMonthDay = function(str) {
     return str.substr(0,2) + "/" + str.substr(2,2);
 }
 
-var formatNumber = function(number) {
-
-}
+/*
+ * validate区分：
+ * mst:  必須入力
+ * ym:   日付フォーマット(yyyy/mm)
+ * ymd:  日付フォーマット(yyyy/mm/dd)
+ * md:   日付フォーマット(mm/dd)
+ * num:  数字(minとmaxも合わせてチェックする)
+ * ac:   英数字(max-len合わせてチェックする)
+ * msn:  電話番号(000-0000-0000)
+ */
+var validateKbn = {
+    mst:    'mst',
+    ym:     'ym',
+    md:     'md',
+    ymd:    'ymd',
+    ac:     'ac',
+    num:    'num',
+    msn:    'msn' 
+};
 
 /**
  * 入力チェック
+ * APIにrequestする際、パラメーターのフォーマットチェックを行う処理
+ * tagにvalidateを記載すれば、それに従ってチェックを行います 
+ * 例：
+ * <input type="text" validate="mst,ymd" label="利用年月"/> 
+ * label属性:
+ * 「${label}を入力してください。」などのエラーメッセージ表示用
+ * err-msg属性: 
+ * エラー時の表示文言、設定された場合、表示する優先順位一覧高い 
  *
+ * 
+ * @param  チェック対象要素リスト
  * @return true:エラーあり、false:エラーなし
  */
 var validate = function(target) {
@@ -147,7 +173,7 @@ var validate = function(target) {
     /**
      * エラー表示
      */
-    var showError = function(target, text) {
+    var displayError = function(target, text) {
         
         // TODO コメントを書く
         var targetDiv = $(target).parent().find(".error");
@@ -160,18 +186,17 @@ var validate = function(target) {
             $(target).addClass("input-error");
         }
 
-        // エラー表示解除
+        // 再度入力された際に、エラー表示解除
         $(target).on('change', function() {
             if ($(target).hasClass('input-error')) {
                 $(target).removeClass('input-error');
             }
-            // 
             if ($(targetDiv).hasClass('error')) {
                 $(targetDiv).text('');
                 $(targetDiv).removeClass('input-error');
             }
         });
-        console.log("showError=" + $(target) +  ",text=" + text);
+        console.log("displayError=" + $(target) +  ",text=" + text);
         return true;
     }
     /**
@@ -180,7 +205,9 @@ var validate = function(target) {
     var notNull = function(target) {
         var value = $(target).val();
         if (isNull(value)) {
-            return showError(target, "必須項目"); 
+            var errorMsg = 
+                $(target).attr("err-msg") ? $(target).attr("err-msg") : "必須項目";
+            return displayError(target, errorMsg);
         }
         return false;
     };
@@ -191,7 +218,7 @@ var validate = function(target) {
         var value = $(target).val();
         if (isNull(value)) { return; }
         if (value.search(regex) < 0) {
-            return showError(target, errorMsg);
+            return displayError(target, errorMsg);
         }
         return false;
     };
@@ -203,9 +230,9 @@ var validate = function(target) {
         if (isNull(value)) { return false; }
         var maxLen = $(target).attr("max-len");
         if (value.search(/^[0-9A-Za-z]*$/) < 0) {
-            return showError(target, "英数字で入力してください。");
+            return displayError(target, $(target).attr("label") + "は英数字で入力してください。");
         } else if(!isNull(maxLen) && value.length > parseInt(maxLen)) {
-            return showError(target, maxLen + "桁まで入力してください。");
+            return displayError(target, $(targetDiv).attr("label") + "は" + maxLen + "桁まで入力してください。");
         } 
         return false;
     };
@@ -219,14 +246,23 @@ var validate = function(target) {
         var max = $(target).attr("max");
         var min = $(target).attr("min");
         if (value.search(/^\d*$/) < 0) {
-            return showError(target, "数字を入力してください。");
+            return displayError(target, $(target).attr("label") + "は数字で入力してください。");
         } else if (!isNull(max) && (parseInt(value) - parseInt(max) > 0)) {
-            return showError(target, "最大" + max + "までの数字を入力してください。");
+            return displayError(target, $(target).attr("label") + "は最大" + max + "までの数字を入力してください。");
         } else if (!isNull(min) && (parseInt(value) - parseInt(min) < 0)) {
-            return showError(target, min + "以上の数字を入力してください。");
+            return displayError(target, $(target).attr("label") + "は" + min + "以上の数字を入力してください。");
         }
         return false;
     };
+    /**
+     * 電番チェック
+     */
+    var msn = function(target) {
+        var value = $(target).val();
+        if (isNull(value)) { return false; }
+        // TODO
+        return false;
+    }
 
     var errorFlag = false;
 
@@ -238,22 +274,28 @@ var validate = function(target) {
         var value = $(this).val();
         $.each(str.split(","), function(i, e){
             switch (e) {
-                case 'mst':
+                case validateKbn.mst:
                     errorFlag = notNull(element);
                     break;
-                case 'ym':
-                    errorFlag = checkDateError(element, /^\d{4}\/\d{2}$/, "YYYY/MMのフォーマットで入力してください。");
+                case validateKbn.ym:
+                    errorFlag = 
+                        checkDateError(element, /^\d{4}\/\d{2}$/, $(element).attr("label") + "はYYYY/MMのフォーマットで入力してください。");
                     break;
-                case 'md':
-                    errorFlag = checkDateError(element, /^\d{2}\/\d{2}$/, "MM/DDのフォーマットで入力してください。");
+                case validateKbn.md:
+                    errorFlag = 
+                        checkDateError(element, /^\d{2}\/\d{2}$/, $(element).attr("label") + "はMM/DDのフォーマットで入力してください。");
                     break;
-                case 'ymd':
-                    errorFlag = checkDateError(element, /^\d{4}\/\d{2}\/\d{2}$/, "YYYY/MM/DDのフォーマットで入力してください。");
+                case validateKbn.ymd:
+                    errorFlag = 
+                        checkDateError(element, /^\d{4}\/\d{2}\/\d{2}$/, $(element).attr("label") + "はYYYY/MM/DDのフォーマットで入力してください。");
                     break;
-                case 'ac':
+                case validateKbn.ac:
                     errorFlag = ac(element);
                     break;
-                case 'num':
+                case validateKbn.num:
+                    errorFlag = num(element);
+                    break;
+                case validateKbn.msn:
                     errorFlag = num(element);
                     break;
             }
@@ -270,6 +312,23 @@ var validate = function(target) {
     return errorFlag;
 }
 
+/*
+ * フォーマット区分：
+ * ymd:  年月日(20170101)
+ * ym:   年月(201701)
+ * md:   月日(0102)
+ * num:  数字(min: 最小値,max: 最大値)
+ * ac:    英数字(len: 最大桁数)
+ */
+var formatKbn = {
+    ym:     'ym',
+    ymd:    'ymd',
+    md:     'md',
+    num:    'num',
+    ac:     'ac',
+    msn:    'msn' 
+};
+
 /**
  * APIより受け取ったデータを画面に表示する際、
  * 表示フォーマットの整形を行う
@@ -279,13 +338,6 @@ var validate = function(target) {
  * <label format='ym'>201601</label> 
  * ↓
  * <label format='ym'>2016/01</label> 
- *　
- * フォーマット区分：
- * ymd:  年月日(20170101)
- * ym:   年月(201701)
- * md:   月日(0102)
- * num:  数字(min: 最小値,max: 最大値)
- * g:    英数字(len: 最大桁数)
  * 
  * @param target 対象となる要素リスト
  */
@@ -307,27 +359,33 @@ var dataFormat = function(target) {
     }
     var formatYm = function(target) {
         var value = getValue(target);
-        if (isNull(value) && value.length != 6) { return; }
+        if (isNull(value)) { return; }
+        if (value.search(/^\d{6}$/) < 0) { return; }
         var formatted = value.substr(0, 4) + "/" + value.substr(4,2);
         setValue(target, formatted);
     }
     var formatMd = function(target) {
         var value = getValue(target);
-        if (isNull(value) && value.length != 4) { return; }
+        if (isNull(value)) { return; }
+        if (value.search(/^\d{4}$/) < 0) { return; }
         var formatted = value.substr(0, 2) + "/" + value.substr(2,2);
         setValue(target, formatted);
     }
     var formatYmd = function(target) {
         var value = getValue(target);
-        if (isNull(value) && value.length != 8) { return; }
+        if (isNull(value)) { return; }
+        if (value.search(/^\d{8}$/) < 0) { return; }
         var formatted = 
             value.substr(0, 4) + "/" + value.substr(4,2) + "/" + value.substr(6,2);
         setValue(target, formatted);
     }
+    var formatDate = function(target, formatKbn) {
+        // TODO リファクタリング予定
+    }
     var formatNum = function(target) {
         var value = getValue(target);
         if (isNull(value)) { return; }
-
+        // カンマ追加
         var addComma = function(str) {
             if (str.length > 3) {
                 return addComma(str.substr(0, str.length-3)) 
@@ -339,30 +397,70 @@ var dataFormat = function(target) {
         var formatted = addComma(value);
         setValue(target, formatted);
     }
-
+    var formatMsn = function(target) {
+        var value = getValue(target);
+        if (isNull(value)) { return; }
+        if (value.search(/^\d{11}$/) > -1) {
+            var formatted = value.substr(0, 3) + '-' + value.substr(3, 4) + '-' + value.substr(7, 4);
+            setValue(target, formatted);
+        }
+    }
 
     $.each(target, function(index, element){
         var format = $(this).attr("format");
         if (isNull(format)) { return; }
         switch (format) {
-            case 'ym':
+            case formatKbn.ym:
                 formatYm(element);
                 break;
-            case 'md':
+            case formatKbn.md:
                 formatMd(element);
                 break;
-            case 'ymd': 
+            case formatKbn.ymd: 
                 formatYmd(element);
                 break;
-            case 'num':
+            case formatKbn.num:
                 formatNum(element);
+                break;
+            case formatKbn.msn:
+                formatMsn(element);
                 break;
         }
     });
 }
 
 /**
+ * リクエストパラーメターの値取得
+ * 
+ * @param　target 対象要素
+ * @return 整形後のパラメーター値
+ */
+var getParamValue = function(target) {
+    if (isNull($(target))) { return; }
+    var value = $(target).val();
+    if (isNull(value)) { return ''; }
+    var format = $(target).attr("format");
+    if (!isNull(format)) {
+        switch (format) {
+            case formatKbn.ym:
+            case formatKbn.ymd:
+            case formatKbn.md:
+                // 「/」削除
+                value = value.replaceAll('/', '');
+                break;
+            case formatKbn.num:
+                // 「,」削除
+                value = value.replaceAll(',', '');
+                break;
+        }
+    }
+    return value;
+}
+
+/**
  * Null判定
+ *
+ * @return true: null,false: not null
  */
 var isNull = function(obj) {
     if (obj == undefined || (obj != undefined && obj.length < 1)) {
@@ -374,6 +472,7 @@ var isNull = function(obj) {
 
 /**
  * datePicker初期化処理
+ * 対象要素リスト
  */
 var initDatePicker = function(target) {
 
@@ -384,15 +483,15 @@ var initDatePicker = function(target) {
         var format = '';
         var minViewMode = '';
         switch ($(this).attr("format")) {
-            case 'ym':
+            case formatKbn.ym:
                 format = 'yyyy/mm';
                 minViewMode = 'months';
                 break;
-            case 'ymd':
+            case formatKbn.ymd:
                 format = 'yyyy/mm/dd';
                 minViewMode = 'days';
                 break;
-            case 'md':
+            case formatKbn.md:
                 format = 'mm/dd';
                 minViewMode = 'days';
                 break;

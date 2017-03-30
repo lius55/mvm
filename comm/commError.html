@@ -27,9 +27,10 @@
 					<td>利用年月</td>
 					<td>
 						<div class="input-group calendar-month">
-			                <input type="text" class="form-control date" id="useDateMonth" placeholder="YYYY/MM"/>
+			                <input type="text" class="form-control date" id="useDateMonth" placeholder="YYYY/MM" format="ym" label="利用年月" validate="mst,ym" err-msg="利用年月を入力してください。"/>
 			                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			            </div>
+			            <div class="error calendar-error"></div>
 					</td>
 				</tr>
 			</table>
@@ -47,6 +48,9 @@
 
 <!--テンプレート定義-->
 <script type="text/html" id="errorListTemplate">
+	{{if recordCount < 1}}
+		検索結果がありませんでした。
+	{{else}}
 	<div class="btn-grp-right btn-grp-page">
 		{{if index <= 1}}
 			<button type="button" class="btn btn-extend btn-disable">前へ</button>
@@ -70,7 +74,7 @@
 		</tr>
 		{{each res}}
 		<tr>
-			<td>${useDateMonth}</td>
+			<td format="ym">${useDateMonth}</td>
 			<td>${serialNumber}</td>
 			<td>${simNumber}</td>
 			<td>${errText}</td>
@@ -78,6 +82,7 @@
 		</tr>
 		{{/each}}
 	</table>
+	{{/if}}
 </script>
 
 </html>

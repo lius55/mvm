@@ -3,8 +3,14 @@ $(function(){
 	// 現在閲覧ページ
 	var currentIndex = 1;
 	// 現在選択した利用年月
-	var currentUseDateMonth = getMonth($("#useDateMonth").val());
+	var currentUseDateMonth = getParamValue($("#useDateMonth"));
 
+	/**
+	 * エラーリスト取得
+	 * @param useDateMonth 	利用年月
+	 * @param index 		ページ番号
+	 * @oaram success 		成功時の処理
+	 */
 	var getErrorList = function(useDateMonth, index, success){
 		var requestParam = {
 			useDateMonth: useDateMonth,
@@ -19,20 +25,24 @@ $(function(){
 		});
 	};
 
+	/**
+	 * エラー情報表示
+	 * @param response 返却jsonデータ
+	 */
 	var showErrorList = function(response) {
 		var response = $.parseJSON(response);
 		response.index = parseInt(currentIndex);
 		response.pagenum = Math.ceil(parseInt(response.recordCount)/eachPageNum);
 		$("#errorList").empty();
 		$.tmpl($("#errorListTemplate"), response).appendTo("#errorList");
+		// データ整形処理
+		dataFormat($("[format]"));
 	};
 
 	// 検索ボタンイベント
 	$("#search").on('click', function(){
-		if($("#useDateMonth").val().length < 1) {
-			alert("利用年月入力してください。");
-		}
-		currentUseDateMonth = getMonth($("#useDateMonth").val());
+		if(validate($("[validate]"))) { return; }
+		currentUseDateMonth = getParamValue($("#useDateMonth").val());
 		getErrorList(currentUseDateMonth, currentIndex, showErrorList);
 	});
 
@@ -51,6 +61,8 @@ $(function(){
 		}
 	});
 
-	// 初期表示
+	// -----------
+	//   初期表示
+	// -----------
 	getErrorList(currentUseDateMonth, currentIndex, showErrorList);
 });

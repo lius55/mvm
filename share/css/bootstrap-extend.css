@@ -42,6 +42,13 @@ body {
 /* 月選択 */
 .calendar-month {
 	width: 180px;
+	display: inline-table;
+}
+.calendar-error {
+	display: inline-table !important;
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 .input-extend-m {
 	width: 300px;
@@ -202,7 +209,7 @@ body {
 	border: 2px solid red !important;
 }
 .error {
-	/*display: inline-block;*/
+	display: inline-block;
 	color: red;
 }
 .invisible {
