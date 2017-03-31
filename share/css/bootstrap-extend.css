@@ -38,6 +38,7 @@ body {
 /* カレンダー選択 */
 .calendar-date {
 	width: 300px;
+	display: inline-table;
 }
 /* 月選択 */
 .calendar-month {
@@ -49,6 +50,7 @@ body {
     position: absolute;
     margin-top: 10px;
     margin-left: 10px;
+    max-width: 450px;
 }
 .input-extend-m {
 	width: 300px;

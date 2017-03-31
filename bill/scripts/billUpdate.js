@@ -48,7 +48,7 @@ $(function(){
 	};
 
 	var showBilllList = function(response) {
-		response = $.parseJSON(response);
+		// response = $.parseJSON(response);
 		response.index = parseInt(currentIndex);
 		response.pagenum = Math.ceil(parseInt(response.recordCount)/eachPageNum);
 		tempDetailList = response;
@@ -64,7 +64,7 @@ $(function(){
 		$("#billListContainer").hide();
 		$("#billUpateContainer").show();
 
-		response = $.parseJSON(response);
+		// response = $.parseJSON(response);
 		// 請求情報表示
 		$("#billInfo").empty();
 		$("#billInfoTemplate").tmpl(response).appendTo("#billInfo");
@@ -128,12 +128,16 @@ $(function(){
   			billingDate: getParamValue($("#billData").find("[name=billingDate]")),
   			billMethod: $("#billData").find("[name=billMethod]").val(),
   			acTranReqNum: $("#billData").find("[name=acTranReqNum]").val(),
+  			taxExcludedPrice: getParamValue($("#taxExcludedPrice")),
+  			tax: getParamValue($("#tax")),
+  			taxInclusivePrice: getParamValue($("#taxInclusivePrice")),
   			transferResult: getParamValue($("#billData").find("[name=transferResult]")),
   			transferResultDate: getParamValue($("#billData").find("[name=transferResultDate]")),
   			billingReportInfo: billingReportInfo
   		};
 
-  		var updateSuccess = function(){
+  		var updateSuccess = function(response){
+  			if (validateResponse(response)) { return; }
   			alert("更新完了しました。");
   		};
 
@@ -147,6 +151,24 @@ $(function(){
 	$("#billInfo").on('click', '.btn-cancel', function(){
 		$("#billListContainer").show();
 		$("#billUpateContainer").hide();
+	});
+
+	// 再計算
+	$("#billInfo").on('click', '.btn-recal', function() {
+		// 合計金額（税抜き）
+		var taxExcludedPrice = 0;
+		$.each($("#billDetail").find("[name=taxExcludedPrice]"), function(index, element){
+			if (validate($(element))) { return; }
+			taxExcludedPrice += parseInt(getParamValue($(element)));
+		});
+		console.log("taxExcludedPrice=" + taxExcludedPrice);
+		$("#taxExcludedPrice").text(taxExcludedPrice);
+		var tax = Math.floor(taxExcludedPrice * 0.08);
+		$("#tax").text(tax);
+		var taxInclusivePrice = taxExcludedPrice + tax;
+		$("#taxInclusivePrice").text(taxInclusivePrice);
+		// データ表示整形
+		dataFormat($("#billInfo").find("[format]"));
 	});
 
 	// ---------------

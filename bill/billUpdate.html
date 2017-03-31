@@ -120,23 +120,23 @@
 		</tr>
 		<tr>
 			<td>請求合計（税抜）</td>
-			<td class="values" format="num">${taxExcludedPrice}</td>
+			<td class="values" format="num" id="taxExcludedPrice">${taxExcludedPrice}</td>
 			<td>登録更新オペレータID</td>
 			<td class="values">${operatorID}</td>
 		</tr>
 		<tr>
 			<td>消費税</td>
-			<td class="values" format="num">${tax}</td>
+			<td class="values" format="num" id="tax">${tax}</td>
 		</tr>
 		<tr>
 			<td>請求合計（税込）</td>
-			<td class="values" format="num">${taxInclusivePrice}</td>
+			<td class="values" format="num" id="taxInclusivePrice">${taxInclusivePrice}</td>
 		</tr>
 	</table>
 	<div>
 		<button type="button" class="btn btn-extend btn-success btn-update">更新</button>
 		<button type="button" class="btn btn-extend btn-success btn-cancel">キャンセル</button>
-		<button type="button" class="btn btn-extend btn-success btn-right">再計算</button>
+		<button type="button" class="btn btn-extend btn-success btn-right btn-recal">再計算</button>
 	</div>
 </script>
 <!--請求データテンプレート-->
@@ -146,10 +146,10 @@
 			<td>請求日</td>
 			<td>
 				<div class="input-group calendar-date">
-					<input type="text" class="form-control date" value="${billingDate}" name="billingDate" format="ymd" validate="ymd"/>
+					<input type="text" class="form-control date" value="${billingDate}" name="billingDate" format="ymd" validate="ymd" label="請求日"/>
 			    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span><span>
 			    </div>
-			    <div class="error"></div>
+			    <div class="error calendar-error"></div>
 			</td>
 		</tr>
 		<tr>

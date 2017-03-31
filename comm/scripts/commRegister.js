@@ -12,11 +12,8 @@ $(function(){
 
 		// 結果ハンドリング
 		var responseHandler = function(response){
-			if (response.response == 'OK') {
-				alert("データ作成しました。")
-			} else {
-				alert("エラーが発生しました。");
-			}
+			if(validateResponse(response)) { return; }
+			alert("データ作成しました。");
 		}
 
 		// アップロード処理
@@ -29,17 +26,19 @@ $(function(){
 	});
 
 	// アップロードボタン設定
-	$.each($("#upload"), function(index, element) {
+	initFileInput($("#upload"));
+
+	// $.each($("#upload"), function(index, element) {
 		
-		var fileInput = $("#" + $(this).attr("for"));
-		var fileNameInput = $("#" + $(this).attr("display"));
+	// 	var fileInput = $("#" + $(this).attr("for"));
+	// 	var fileNameInput = $("#" + $(this).attr("display"));
 
-		$(this).on('click', function() {
-			$(fileInput).click();			
-		});
+	// 	$(this).on('click', function() {
+	// 		$(fileInput).click();			
+	// 	});
 
-		$(fileInput).change(function() {
-			$(fileNameInput).val($(this).val());			
-		});
-	});
+	// 	$(fileInput).change(function() {
+	// 		$(fileNameInput).val($(this).val());			
+	// 	});
+	// });
 });

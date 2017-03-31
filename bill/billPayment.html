@@ -25,14 +25,15 @@
 				<tr>
 					<td>請求年月</td>
 					<td>
-						<div class="input-group date-extend">
-	                    	<input type="text" class="form-control date"/>
+						<div class="input-group calendar-month">
+	                    	<input type="text" class="form-control date" validate="mst,ym" format="ym" id="billDateMonth" label="請求年月" err-msg="請求年月を入力してください。"/>
 	                    	<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 	                	</div>
+	                	<div class="error calendar-error"></div>
 					</td>
 				</tr>
 			</table>
-			<div><button type="button" class="btn btn-extend btn-success">入金消込</button></div>
+			<div><button type="button" class="btn btn-extend btn-success" id="scrub">入金消込</button></div>
 		</div>
 	</div>
 </body>

@@ -56,24 +56,19 @@ var apiList = {
 var eachPageNum = 30;
 
 /**
- * カレンダーの文字列よりリクエスト用のフォーマットへの変換
- */
-var getMonth = function(str) {
-    if (str == undefined) { 
-        return ''; 
-    } else {
-        return str.replace('/', '');
-    }
-};
-
-/**
  * api呼び出し用ajaxラッピング関数
  */
 var ajax = function(option) {
 	$.ajax({
 		type: 'POST',
 		url: option.url,
-    	data: option.data,
+    	data: JSON.stringify(option.data),
+        // data: option.data,
+        dataType: 'json',
+        header: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
     	cache: false,
     	success: option.success,
     	error: function(xhr){
@@ -107,30 +102,6 @@ var ajaxUpload = function(option) {
             }
         }
     });   
-}
-
-/**
- * 日付文字列の「/」削除
- * 2016/01⇒201601
- */
-var formatDate = function(str) {
-    return str.replace("/", "");
-};
-
-/**
- * 年月文字列を「/」追加で表示
- * 201601⇒2016/01
- */
-var showDateMonth = function(str) {
-    return str.substr(0,4) + "/" + str.substr(4,2);
-};
-
-/**
- * 月日文字列を「/」追加で表示
- * 0102⇒01/02
- */
-var showMonthDay = function(str) {
-    return str.substr(0,2) + "/" + str.substr(2,2);
 }
 
 /*
@@ -232,7 +203,7 @@ var validate = function(target) {
         if (value.search(/^[0-9A-Za-z]*$/) < 0) {
             return displayError(target, $(target).attr("label") + "は英数字で入力してください。");
         } else if(!isNull(maxLen) && value.length > parseInt(maxLen)) {
-            return displayError(target, $(targetDiv).attr("label") + "は" + maxLen + "桁まで入力してください。");
+            return displayError(target, $(target).attr("label") + "は" + maxLen + "桁まで入力してください。");
         } 
         return false;
     };
@@ -310,7 +281,7 @@ var validate = function(target) {
         alert("入力エラー発生しました。ご確認ください。");
     }
     return errorFlag;
-}
+};
 
 /*
  * フォーマット区分：
@@ -427,7 +398,7 @@ var dataFormat = function(target) {
                 break;
         }
     });
-}
+};
 
 /**
  * リクエストパラーメターの値取得
@@ -437,7 +408,7 @@ var dataFormat = function(target) {
  */
 var getParamValue = function(target) {
     if (isNull($(target))) { return; }
-    var value = $(target).val();
+    var value = ($(target).prop("tagName") == "INPUT") ? $(target).val() : $(target).text();
     if (isNull(value)) { return ''; }
     var format = $(target).attr("format");
     if (!isNull(format)) {
@@ -455,7 +426,7 @@ var getParamValue = function(target) {
         }
     }
     return value;
-}
+};
 
 /**
  * Null判定
@@ -468,7 +439,7 @@ var isNull = function(obj) {
     } else {
         return false;
     }
-}
+};
 
 /**
  * datePicker初期化処理
@@ -504,4 +475,52 @@ var initDatePicker = function(target) {
             language: 'ja'              // カレンダー日本語化のため
         });
     });
-}
+};
+
+/**
+ *
+ */
+var downloadCsvFile = function(data, fileName) {
+
+    var downloadData = new Blob([data], {type: 'text/csv'});
+
+    if (window.navigator.msSaveBlob) {
+        window.navigator.msSaveBlob(downloadData, fileName); // IE用
+    } else {
+        var downloadUrl  = (window.URL || window.webkitURL).createObjectURL(downloadData);
+        var link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName;
+        link.click();
+        (window.URL || window.webkitURL).revokeObjectURL(downloadUrl);
+    }
+};
+
+/**
+ *
+ * @return true:エラーあり、false:エラーなし
+ */
+var validateResponse = function(response) {
+    if (!isNull(response.response) && response.response != 'OK') {
+        alert("システムエラーが発生しました。");
+        return true;
+    }
+    return false;
+};
+
+var initFileInput = function(target) {
+
+    $.each(target, function(index, element) {
+        
+        var fileInput = $("#" + $(this).attr("for"));
+        var fileNameInput = $("#" + $(this).attr("display"));
+
+        $(this).on('click', function() {
+            $(fileInput).click();           
+        });
+
+        $(fileInput).change(function() {
+            $(fileNameInput).val($(this).val());            
+        });
+    });
+};
